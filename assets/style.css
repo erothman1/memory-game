@@ -1,0 +1,34 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.game-container {
+    width: 40rem;
+    height: 43.75rem;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.controllers {
+    display: flex;
+    flex-direction: row;
+}
+
+.board {
+    display: flex; 
+    flex-wrap: wrap;
+    width: 40rem;
+    height: 40rem;
+}
+
+.card {
+    width: 9rem;
+    height: 9rem;
+    margin: .313rem;
+    position: relative;
+    background-color: rgb(127, 163, 255);
+}
+
