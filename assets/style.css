@@ -4,20 +4,26 @@
     box-sizing: border-box;
 }
 
-.game-container {
+body {
+    background-color:rgb(233, 214, 243);
+}
+
+#game-container {
     width: 40rem;
     height: 43.75rem;
     margin: auto;
+    padding: .8rem;
     display: flex;
     flex-direction: column;
+    background-color: rgb(24, 74, 34);
 }
 
-.controllers {
+#controllers {
     display: flex;
     flex-direction: row;
 }
 
-.board {
+#board {
     display: flex; 
     flex-wrap: wrap;
     width: 40rem;
@@ -29,6 +35,20 @@
     height: 9rem;
     margin: .313rem;
     position: relative;
-    background-color: rgb(127, 163, 255);
+    background-color: rgb(209, 245, 207);
+    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 }
 
+.front, 
+.back {
+    position: absolute; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    font-size: 50px;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
