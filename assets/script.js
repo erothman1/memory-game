@@ -80,7 +80,7 @@ const gameCreation = () => {
 
     for (let i = 0; i < dimensions * dimensions; i++) {
         board.innerHTML += `
-        <div class="card" data-card="${shufflePicks[i].emoji}">
+        <div class="card" data-id="${i}">
             <div class="card-inner">
                 <div class="front">🤷🏽</div>
                 <div class="back"></div>
@@ -89,6 +89,7 @@ const gameCreation = () => {
         `
     }
 
+    const answers = shufflePicks.map(item => item.emoji)
     // const cards =  document.querySelectorAll(".card")
 
     // cards.forEach(card => {
@@ -112,7 +113,7 @@ const gameCreation = () => {
         const card = event.target.closest(".card")
     
         if (card) {
-            evaluateSelections(card)
+            evaluateSelections(card, answers)
         }
     })
 
@@ -125,16 +126,22 @@ const gameCreation = () => {
 let score = 100
 let flipped = []
 
-const evaluateSelections = (card) => {
+const evaluateSelections = (card, answers) => {
 
-    const emoji = card.getAttribute("data-card")
+    console.log(answers, card)
+
+    // const emoji = card.getAttribute("data-card")
+    const cardId = card.getAttribute("data-id")
 
     const back = card.querySelector(".back")
-    back.innerHTML = emoji
+    // back.innerHTML = emoji
 
     if (!card.classList.contains("flipped")){
         card.classList.add("flipped")
         flipped.push(card)
+
+        back.innerHTML = answers[cardId]
+
     }
 
     const flippedCards = document.querySelectorAll(".card.flipped")
@@ -143,23 +150,32 @@ const evaluateSelections = (card) => {
         const card1 = flippedCards[0]
         const card2 = flippedCards[1]
 
-        const card1Value = card1.getAttribute("data-card")
-        const card2Value = card2.getAttribute("data-card")
+        const answer1 = card1.querySelector(".back")
+        const answer2 = card2.querySelector(".back")
 
-        if ( card1Value === card2Value ) {
+        // const card1Value = card1.getAttribute("data-card")
+        // const card2Value = card2.getAttribute("data-card")
+
+        if ( answer1.textContent === answer2.textContent ) {
             card1.classList.add("correct")
             card2.classList.add("correct")
             card1.classList.remove("flipped")
             card2.classList.remove("flipped")
             flipped = []
             score += 10
+            
+            console.log(answer1.textContent, answer2.textContent)
         } else {
             setTimeout(() => {
                 card1.classList.remove("flipped")
                 card2.classList.remove("flipped")
-                card1.querySelector(".back").innerHTML = ""
-                card2.querySelector(".back").innerHTML = ""
+                answer1.innerHTML = ""
+                answer2.innerHTML = ""
+                // card1.querySelector(".back").innerHTML = ""
+                // card2.querySelector(".back").innerHTML = ""
                 score -= 1
+
+                console.log(answer1.textContent, answer2.textContent)
             }, 1000)
         }
 
