@@ -73,52 +73,70 @@ const gameCreation = () => {
 
     const randPicks = pickRandom(dimensions)
 
-    //without the shuffle, only 8 cards will show up because we didnt duplicate them for the matching 
+    //without the shuffle, only 8 cards will show up because we didn't duplicate them for the matching 
     const shufflePicks = shuffle([...randPicks, ...randPicks])
 
     board.innerHTML = ""
 
-    //TODO: when the cards show up, the back of the card isnt centered for some reason
     for (let i = 0; i < dimensions * dimensions; i++) {
         board.innerHTML += `
-        <div class="card" data-card="${shufflePicks[i].name}">
+        <div class="card" data-card="${shufflePicks[i].emoji}">
             <div class="card-inner">
                 <div class="front">🤷🏽</div>
-                <div class="back">${shufflePicks[i].emoji}</div>
+                <div class="back"></div>
             </div>
         </div>
         `
     }
 
-    const cards =  document.querySelectorAll(".card")
+    // const cards =  document.querySelectorAll(".card")
 
-    cards.forEach(card => {
-        card.addEventListener("click", () => {
+    // cards.forEach(card => {
+    //     card.addEventListener("click", () => {
 
-            const cardValue = card.getAttribute("data-card")
-            console.log(cardValue)
+    //         const cardValue = card.getAttribute("data-card")
+    //         console.log(cardValue)
 
-            //flip cards here
-            card.classList.toggle("flipped")
+    //         //flip cards here
+    //         card.classList.toggle("flipped")
 
-            evaluateSelections()
-        })
+    //         evaluateSelections()
+    //     })
+    // })
+
+    // cards.forEach(card => {
+    //     card.addEventListener("click", evaluateSelections, false)
+    // })
+
+    board.addEventListener("click", (event) => {
+        const card = event.target.closest(".card")
+    
+        if (card) {
+            evaluateSelections(card)
+        }
     })
 
 }
 
 //Function to decide correct and wrong answers 
-//use the data-card attribute which uses the name of the emoji to evaluate if matches are correct or not?
-//if correct, keep cards flipped and add a correct class to those cards
-//correct class will add the correct green color to the card 
-//if correct class isn"t applied then cards flip back over
-const evaluateSelections = () => {
 
-    //TODO: this function works until the first match is found; I think maybe because i'm not taking into account that cards are staying flipped?
-    //TODO: score isn't decreasing when answers are wrong, but it does go up when match is correct
+// const count = 0
+// const selected = 0
+let score = 100
+let flipped = []
 
-    let score = 100
-    
+const evaluateSelections = (card) => {
+
+    const emoji = card.getAttribute("data-card")
+
+    const back = card.querySelector(".back")
+    back.innerHTML = emoji
+
+    if (!card.classList.contains("flipped")){
+        card.classList.add("flipped")
+        flipped.push(card)
+    }
+
     const flippedCards = document.querySelectorAll(".card.flipped")
 
     if (flippedCards.length === 2) {
@@ -131,11 +149,16 @@ const evaluateSelections = () => {
         if ( card1Value === card2Value ) {
             card1.classList.add("correct")
             card2.classList.add("correct")
+            card1.classList.remove("flipped")
+            card2.classList.remove("flipped")
+            flipped = []
             score += 10
         } else {
             setTimeout(() => {
                 card1.classList.remove("flipped")
                 card2.classList.remove("flipped")
+                card1.querySelector(".back").innerHTML = ""
+                card2.querySelector(".back").innerHTML = ""
                 score -= 1
             }, 1000)
         }

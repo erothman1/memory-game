@@ -70,9 +70,13 @@ body {
   }
   
   .card.flipped .card-inner {
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) translate(-50%, -50%);
   }
 
-.correct {
+.card.correct .card-inner {
+    transform: rotateY(180deg) translate(-50%, -50%);
+}
+
+.card.correct { 
     background-color: greenyellow;
 }
