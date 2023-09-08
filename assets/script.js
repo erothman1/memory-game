@@ -4,7 +4,11 @@ const gameContainer = document.getElementById("game-container")
 const controllers = document.getElementById("controllers")
 const stats = document.getElementById("stats")
 const board = document.getElementById("board")
-// const cards = document.querySelectorAll(".card")
+let score = 100
+let flipped = []
+let hasFlipped = false
+let lockBoard = false
+let first, second
 
 //Create array of items 
 //using the names to help with match evaluation 
@@ -32,11 +36,11 @@ const items = [
 
 //Function to randomly pick items from the array
 //default dimensions are 4x4 
-const pickRandom = ( dim = 4 ) => {
+const pickRandom = (dim = 4) => {
     const arrayCopy = [...items]
     const randPicks = []
 
-    const boardSize = ( dim * dim ) / 2
+    const boardSize = (dim * dim) / 2
 
     for (let i = 0; i < boardSize; i++) {
         const index = Math.floor(Math.random() * arrayCopy.length)
@@ -52,7 +56,7 @@ const pickRandom = ( dim = 4 ) => {
 }
 
 //Shuffle picks
-const shuffle = ( arr ) => {
+const shuffle = (arr) => {
     const arrayCopy = [...arr]
 
     for (let index = arrayCopy.length - 1; index > 0; index--) {
@@ -111,9 +115,9 @@ const gameCreation = () => {
 
     board.addEventListener("click", (event) => {
         const card = event.target.closest(".card")
-    
-        if (card) {
-            evaluateSelections(card, answers)
+
+        if (card && !lockBoard) {
+            flipCard(card, answers)
         }
     })
 
@@ -123,64 +127,115 @@ const gameCreation = () => {
 
 // const count = 0
 // const selected = 0
-let score = 100
-let flipped = []
 
-const evaluateSelections = (card, answers) => {
 
-    console.log(answers, card)
-
-    // const emoji = card.getAttribute("data-card")
+const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
-
     const back = card.querySelector(".back")
-    // back.innerHTML = emoji
 
-    if (!card.classList.contains("flipped")){
-        card.classList.add("flipped")
-        flipped.push(card)
+    if (lockBoard) return
+    if (card === first) return
 
-        back.innerHTML = answers[cardId]
+    card.classList.add("flipped")
+    back.innerHTML = answers[cardId]
 
+    if (!hasFlipped) {
+        hasFlipped = true
+        first = card
+    } else {
+        second = card
+        hasFlipped = false
+        evaluateSelections()
     }
 
-    const flippedCards = document.querySelectorAll(".card.flipped")
+    // second = this
+    // hasFlipped = false
 
-    if (flippedCards.length === 2) {
-        const card1 = flippedCards[0]
-        const card2 = flippedCards[1]
+    // console.log(second)
 
-        const answer1 = card1.querySelector(".back")
-        const answer2 = card2.querySelector(".back")
+    // evaluateSelections()
 
-        // const card1Value = card1.getAttribute("data-card")
-        // const card2Value = card2.getAttribute("data-card")
+}
 
-        if ( answer1.textContent === answer2.textContent ) {
-            card1.classList.add("correct")
-            card2.classList.add("correct")
-            card1.classList.remove("flipped")
-            card2.classList.remove("flipped")
-            flipped = []
-            score += 10
-            
-            console.log(answer1.textContent, answer2.textContent)
-        } else {
-            setTimeout(() => {
-                card1.classList.remove("flipped")
-                card2.classList.remove("flipped")
-                answer1.innerHTML = ""
-                answer2.innerHTML = ""
-                // card1.querySelector(".back").innerHTML = ""
-                // card2.querySelector(".back").innerHTML = ""
-                score -= 1
+const evaluateSelections = () => {
 
-                console.log(answer1.textContent, answer2.textContent)
-            }, 1000)
-        }
+    console.log("evaluate")
 
-        stats.textContent = `Score: ${score}`
+    lockBoard = true
+
+    if (first.innerHTML === second.innerHTML) {
+        first.removeEventListener("click", () => {})
+        second.removeEventListener("click", () => {})
+        first.classList.add("correct")
+        second.classList.add("correct")
+        flipped.push(first, second)
+        score += 10
+        lockBoard = false
+    } else {
+        setTimeout(() => {
+            first.classList.remove("flipped")
+            second.classList.remove("flipped")
+            first.querySelector(".back").innerHTML = ""
+            second.querySelector(".back").innerHTML = ""
+            score -= 1
+            lockBoard = false
+        }, 1500)
     }
+
+
+    // console.log(answers, card)
+
+    // // const emoji = card.getAttribute("data-card")
+    // const cardId = card.getAttribute("data-id")
+
+    // const back = card.querySelector(".back")
+    // // back.innerHTML = emoji
+
+    // if (!card.classList.contains("flipped")){
+    //     card.classList.add("flipped")
+    //     flipped.push(card)
+
+    //     back.innerHTML = answers[cardId]
+
+    // }
+
+    // const flippedCards = document.querySelectorAll(".card.flipped")
+
+    // if (flippedCards.length === 2) {
+    //     const card1 = flippedCards[0]
+    //     const card2 = flippedCards[1]
+
+    //     const answer1 = card1.querySelector(".back")
+    //     const answer2 = card2.querySelector(".back")
+
+    //     // const card1Value = card1.getAttribute("data-card")
+    //     // const card2Value = card2.getAttribute("data-card")
+
+    //     if ( answer1.textContent === answer2.textContent ) {
+    //         card1.classList.add("correct")
+    //         card2.classList.add("correct")
+    //         card1.classList.remove("flipped")
+    //         card2.classList.remove("flipped")
+    //         flipped = []
+    //         score += 10
+
+    //         console.log(answer1.textContent, answer2.textContent)
+    //     } else {
+    //         setTimeout(() => {
+    //             card1.classList.remove("flipped")
+    //             card2.classList.remove("flipped")
+    //             answer1.innerHTML = ""
+    //             answer2.innerHTML = ""
+    //             // card1.querySelector(".back").innerHTML = ""
+    //             // card2.querySelector(".back").innerHTML = ""
+    //             score -= 1
+
+    //             console.log(answer1.textContent, answer2.textContent)
+    //         }, 1000)
+    //     }
+
+    //     stats.textContent = `Score: ${score}`
+    // }
 
 }
 
@@ -190,7 +245,7 @@ newGame.addEventListener("click", () => {
 
     //TODO: maybe when button is clicked, something can pop up for the user to choose between 3 choices of dimensions? and then game begins 
 
-    gameCreation() 
+    gameCreation()
 
     //clicking new game button also needs to reset the score to 100
     stats.textContent = "Score: 100"
