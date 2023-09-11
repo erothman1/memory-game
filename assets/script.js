@@ -8,7 +8,8 @@ let score = 100
 let flipped = []
 let hasFlipped = false
 let lockBoard = false
-let first, second
+let first = null
+let second = null
 
 //Create array of items 
 //using the names to help with match evaluation 
@@ -124,16 +125,11 @@ const gameCreation = () => {
 }
 
 //Function to decide correct and wrong answers 
-
-// const count = 0
-// const selected = 0
-
-
 const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
 
-    if (lockBoard) return
+    if (lockBoard || card.classList.contains("correct")) return
     if (card === first) return
 
     card.classList.add("flipped")
@@ -157,6 +153,17 @@ const flipCard = (card, answers) => {
 
 }
 
+//TODO: not working lol
+const checkWin = () => {
+    const cards = document.querySelectorAll(".card")
+    const matchedCards = document.querySelectorAll("card.correct")
+
+    if (cards.length === matchedCards.length ) {
+        const youWin = document.getElementById("you-win")
+        youWin.style.display = "block"
+    }
+}
+
 const evaluateSelections = () => {
 
     console.log("evaluate")
@@ -170,6 +177,7 @@ const evaluateSelections = () => {
         second.classList.add("correct")
         flipped.push(first, second)
         score += 10
+        checkWin()
         lockBoard = false
     } else {
         setTimeout(() => {
@@ -234,7 +242,7 @@ const evaluateSelections = () => {
     //         }, 1000)
     //     }
 
-    //     stats.textContent = `Score: ${score}`
+        stats.textContent = `Score: ${score}`
     // }
 
 }

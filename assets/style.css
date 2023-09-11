@@ -2,10 +2,40 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family:Arial, Helvetica, sans-serif
 }
 
 body {
-    background-color:rgb(233, 214, 243);
+    background-color:rgb(214, 243, 220);
+}
+
+#new-game {
+    color: white;
+    background-color: rgb(12, 180, 12);
+    border: none;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    font-size: 15px;
+}
+
+#stats {
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border: solid rgb(12, 180, 12);
+    margin: 5px;
+    border-radius: 20px;
+}
+
+#you-win {
+    display: none;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 9999; 
 }
 
 #game-container {
@@ -20,7 +50,7 @@ body {
 
 #controllers {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 #board {
