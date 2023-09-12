@@ -10,6 +10,8 @@ let hasFlipped = false
 let lockBoard = false
 let first = null
 let second = null
+const correctGuess = 10
+const incorrectGuess = -1
 
 //Create array of items 
 //using the names to help with match evaluation 
@@ -52,7 +54,7 @@ const pickRandom = (dim = 4) => {
         //delete randomly picked item from the array copy to avoid duplicate picks 
         arrayCopy.splice(index, 1)
     }
-
+    console.log("pick rand")
     return randPicks
 }
 
@@ -67,7 +69,7 @@ const shuffle = (arr) => {
         arrayCopy[index] = arrayCopy[randomIndex]
         arrayCopy[randomIndex] = original
     }
-
+    console.log("shuffle")
     return arrayCopy
 }
 
@@ -183,7 +185,8 @@ const evaluateSelections = () => {
         first.classList.add("correct")
         second.classList.add("correct")
         flipped.push(first, second)
-        score += 10
+        // score += 10
+        givePoints(correctGuess)
         checkWin()
         lockBoard = false
     } else {
@@ -192,7 +195,8 @@ const evaluateSelections = () => {
             second.classList.remove("flipped")
             first.querySelector(".back").innerHTML = ""
             second.querySelector(".back").innerHTML = ""
-            score -= 1
+            // score -= 1
+            givePoints(incorrectGuess)
             lockBoard = false
         }, 1500)
     }
@@ -249,13 +253,24 @@ const evaluateSelections = () => {
     //         }, 1000)
     //     }
 
-        stats.textContent = `Score: ${score}`
+        // stats.textContent = `Score: ${score}`
     // }
 
 }
 
+const givePoints = (points) => {
+    score += points
+
+    if ( stats != null ) {
+        stats.textContent = `Score: ${score}`
+    }
+
+    return
+}
+
 //Event listener for new game/starting game button 
 newGame.addEventListener("click", () => {
+
     console.log("Im here")
 
     //TODO: maybe when button is clicked, something can pop up for the user to choose between 3 choices of dimensions? and then game begins 
