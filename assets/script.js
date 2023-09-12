@@ -73,6 +73,8 @@ const shuffle = (arr) => {
 
 //Function to create game with cards
 const gameCreation = () => {
+
+    console.log("game creation")
     //default of the data-dimensions attribute is 4
     const dimensions = board.getAttribute("data-dimensions")
 
@@ -153,15 +155,20 @@ const flipCard = (card, answers) => {
 
 }
 
-//TODO: not working lol
+//Function to check if game is over and user won
 const checkWin = () => {
     const cards = document.querySelectorAll(".card")
-    const matchedCards = document.querySelectorAll("card.correct")
+    const matchedCards = document.querySelectorAll(".card.correct")
 
     if (cards.length === matchedCards.length ) {
         const youWin = document.getElementById("you-win")
         youWin.style.display = "block"
+
+        setTimeout(() => {
+            document.location.reload()
+        }, 1000)
     }
+
 }
 
 const evaluateSelections = () => {

@@ -36,6 +36,12 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     text-align: center;
     z-index: 9999; 
+    margin: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 50px;
+    background-color: rgb(24, 74, 34);
 }
 
 #game-container {
@@ -51,6 +57,7 @@ body {
 #controllers {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 #board {
