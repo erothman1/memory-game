@@ -257,4 +257,5 @@ newGame.addEventListener("click", () => {
 
     //clicking new game button also needs to reset the score to 100
     stats.textContent = "Score: 100"
+    score = 100
 })
