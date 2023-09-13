@@ -12,6 +12,7 @@ let first = null
 let second = null
 const correctGuess = 10
 const incorrectGuess = -1
+let answers = null
 
 //Create array of items 
 //using the names to help with match evaluation 
@@ -40,7 +41,7 @@ const items = [
 //Function to randomly pick items from the array
 //default dimensions are 4x4 
 const pickRandom = (dim = 4) => {
-    const arrayCopy = [...items]
+    let arrayCopy = [...items]
     const randPicks = []
 
     const boardSize = (dim * dim) / 2
@@ -55,6 +56,7 @@ const pickRandom = (dim = 4) => {
         arrayCopy.splice(index, 1)
     }
     console.log("pick rand")
+    arrayCopy = []
     return randPicks
 }
 
@@ -98,7 +100,7 @@ const gameCreation = () => {
         `
     }
 
-    const answers = shufflePicks.map(item => item.emoji)
+    answers = shufflePicks.map(item => item.emoji)
     // const cards =  document.querySelectorAll(".card")
 
     // cards.forEach(card => {
@@ -120,6 +122,8 @@ const gameCreation = () => {
 
     board.addEventListener("click", (event) => {
         const card = event.target.closest(".card")
+
+        console.log(answers)
 
         if (card && !lockBoard) {
             flipCard(card, answers)
@@ -253,7 +257,7 @@ const evaluateSelections = () => {
     //         }, 1000)
     //     }
 
-        // stats.textContent = `Score: ${score}`
+
     // }
 
 }
