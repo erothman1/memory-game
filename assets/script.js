@@ -101,24 +101,6 @@ const gameCreation = () => {
     }
 
     answers = shufflePicks.map(item => item.emoji)
-    // const cards =  document.querySelectorAll(".card")
-
-    // cards.forEach(card => {
-    //     card.addEventListener("click", () => {
-
-    //         const cardValue = card.getAttribute("data-card")
-    //         console.log(cardValue)
-
-    //         //flip cards here
-    //         card.classList.toggle("flipped")
-
-    //         evaluateSelections()
-    //     })
-    // })
-
-    // cards.forEach(card => {
-    //     card.addEventListener("click", evaluateSelections, false)
-    // })
 
     board.addEventListener("click", (event) => {
         const card = event.target.closest(".card")
@@ -152,13 +134,6 @@ const flipCard = (card, answers) => {
         evaluateSelections()
     }
 
-    // second = this
-    // hasFlipped = false
-
-    // console.log(second)
-
-    // evaluateSelections()
-
 }
 
 //Function to check if game is over and user won
@@ -189,7 +164,6 @@ const evaluateSelections = () => {
         first.classList.add("correct")
         second.classList.add("correct")
         flipped.push(first, second)
-        // score += 10
         givePoints(correctGuess)
         checkWin()
         lockBoard = false
@@ -199,66 +173,10 @@ const evaluateSelections = () => {
             second.classList.remove("flipped")
             first.querySelector(".back").innerHTML = ""
             second.querySelector(".back").innerHTML = ""
-            // score -= 1
             givePoints(incorrectGuess)
             lockBoard = false
         }, 1500)
     }
-
-
-    // console.log(answers, card)
-
-    // // const emoji = card.getAttribute("data-card")
-    // const cardId = card.getAttribute("data-id")
-
-    // const back = card.querySelector(".back")
-    // // back.innerHTML = emoji
-
-    // if (!card.classList.contains("flipped")){
-    //     card.classList.add("flipped")
-    //     flipped.push(card)
-
-    //     back.innerHTML = answers[cardId]
-
-    // }
-
-    // const flippedCards = document.querySelectorAll(".card.flipped")
-
-    // if (flippedCards.length === 2) {
-    //     const card1 = flippedCards[0]
-    //     const card2 = flippedCards[1]
-
-    //     const answer1 = card1.querySelector(".back")
-    //     const answer2 = card2.querySelector(".back")
-
-    //     // const card1Value = card1.getAttribute("data-card")
-    //     // const card2Value = card2.getAttribute("data-card")
-
-    //     if ( answer1.textContent === answer2.textContent ) {
-    //         card1.classList.add("correct")
-    //         card2.classList.add("correct")
-    //         card1.classList.remove("flipped")
-    //         card2.classList.remove("flipped")
-    //         flipped = []
-    //         score += 10
-
-    //         console.log(answer1.textContent, answer2.textContent)
-    //     } else {
-    //         setTimeout(() => {
-    //             card1.classList.remove("flipped")
-    //             card2.classList.remove("flipped")
-    //             answer1.innerHTML = ""
-    //             answer2.innerHTML = ""
-    //             // card1.querySelector(".back").innerHTML = ""
-    //             // card2.querySelector(".back").innerHTML = ""
-    //             score -= 1
-
-    //             console.log(answer1.textContent, answer2.textContent)
-    //         }, 1000)
-    //     }
-
-
-    // }
 
 }
 
