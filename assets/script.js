@@ -105,8 +105,6 @@ const gameCreation = () => {
     board.addEventListener("click", (event) => {
         const card = event.target.closest(".card")
 
-        console.log(answers)
-
         if (card && !lockBoard) {
             flipCard(card, answers)
         }
@@ -159,8 +157,6 @@ const evaluateSelections = () => {
     lockBoard = true
 
     if (first.innerHTML === second.innerHTML) {
-        first.removeEventListener("click", () => {})
-        second.removeEventListener("click", () => {})
         first.classList.add("correct")
         second.classList.add("correct")
         flipped.push(first, second)
