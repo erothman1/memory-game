@@ -115,7 +115,7 @@ const gameCreation = () => {
     board.addEventListener("click", (event) => {
         const card = event.target.closest(".card")
 
-        if (card && !lockBoard) {
+        if (card && !lockBoard && !card.classList.contains("correct")) {
             flipCard(card, answers)
         }
     })
@@ -142,6 +142,8 @@ const flipCard = (card, answers) => {
         evaluateSelections()
     }
 
+    count++
+    console.log(count)
 }
 
 //Function to check if game is over and user won
@@ -175,9 +177,33 @@ const evaluateSelections = () => {
             second.querySelector(".back").innerHTML = ""
             givePoints(incorrectGuess)
             lockBoard = false
-        }, 1500)
+        }, 1000)
     }
 
+    // first = null 
+    // second = null 
+
+    // if (count === 2) {
+    //     count -= 2
+    // }
+
+    // if (count === 0) {
+    //     lockBoard = false
+    // }
+
+}
+
+const countChecker = () => {
+    first = null 
+    second = null 
+
+    if (count === 2) {
+        count -= 2
+    }
+
+    if (count === 0) {
+        lockBoard = false
+    }
 }
 
 const givePoints = (points) => {
