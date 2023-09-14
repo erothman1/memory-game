@@ -4,6 +4,7 @@ const gameContainer = document.getElementById("game-container")
 const controllers = document.getElementById("controllers")
 const stats = document.getElementById("stats")
 const board = document.getElementById("board")
+const youWin = document.getElementById("you-win")
 let score = 100
 let flipped = []
 let hasFlipped = false
@@ -13,6 +14,7 @@ let second = null
 const correctGuess = 10
 const incorrectGuess = -1
 let answers = null
+let count = 0
 
 //Create array of items 
 //using the names to help with match evaluation 
@@ -79,6 +81,14 @@ const shuffle = (arr) => {
 const gameCreation = () => {
 
     console.log("game creation")
+
+    stats.textContent = "Score: 100"
+    score = 100
+
+    if (youWin) {
+        youWin.style.display = "none"
+    }
+
     //default of the data-dimensions attribute is 4
     const dimensions = board.getAttribute("data-dimensions")
 
@@ -140,14 +150,8 @@ const checkWin = () => {
     const matchedCards = document.querySelectorAll(".card.correct")
 
     if (cards.length === matchedCards.length ) {
-        const youWin = document.getElementById("you-win")
         youWin.style.display = "block"
-
-        setTimeout(() => {
-            document.location.reload()
-        }, 1000)
     }
-
 }
 
 const evaluateSelections = () => {
@@ -187,15 +191,4 @@ const givePoints = (points) => {
 }
 
 //Event listener for new game/starting game button 
-newGame.addEventListener("click", () => {
-
-    console.log("Im here")
-
-    //TODO: maybe when button is clicked, something can pop up for the user to choose between 3 choices of dimensions? and then game begins 
-
-    gameCreation()
-
-    //clicking new game button also needs to reset the score to 100
-    stats.textContent = "Score: 100"
-    score = 100
-})
+newGame.addEventListener("click", gameCreation)
