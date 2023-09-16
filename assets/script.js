@@ -15,6 +15,7 @@ const correctGuess = 10
 const incorrectGuess = -1
 let answers = null
 let count = 0
+let flipTimeout = null
 
 //Create array of items 
 //using the names to help with match evaluation 
@@ -127,6 +128,12 @@ const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
 
+    // if (flipTimeout) {
+    //     clearTimeout(flipTimeout)
+    //     flipTimeout = null
+    //     console.log("flip timeout")
+    // }
+
     if (lockBoard || card.classList.contains("correct")) return
     if (card === first) return
 
@@ -139,6 +146,7 @@ const flipCard = (card, answers) => {
     } else {
         second = card
         hasFlipped = false
+        // clearTimeout(flipTimeout)
         evaluateSelections()
     }
 
@@ -162,6 +170,8 @@ const evaluateSelections = () => {
 
     lockBoard = true
 
+    countChecker()
+
     if (first.innerHTML === second.innerHTML) {
         first.classList.add("correct")
         second.classList.add("correct")
@@ -170,16 +180,17 @@ const evaluateSelections = () => {
         checkWin()
         lockBoard = false
     } else {
-        setTimeout(() => {
+        flipTimeout = setTimeout(() => {
             first.classList.remove("flipped")
             second.classList.remove("flipped")
             first.querySelector(".back").innerHTML = ""
             second.querySelector(".back").innerHTML = ""
             givePoints(incorrectGuess)
             lockBoard = false
-        }, 1000)
+        }, 800)
     }
 
+    // countChecker()
     // first = null 
     // second = null 
 
@@ -194,11 +205,9 @@ const evaluateSelections = () => {
 }
 
 const countChecker = () => {
-    first = null 
-    second = null 
 
     if (count === 2) {
-        count -= 2
+        count = 0
     }
 
     if (count === 0) {
