@@ -116,7 +116,7 @@ const gameCreation = () => {
     board.addEventListener("click", (event) => {
         const card = event.target.closest(".card")
 
-        if (card && !lockBoard && !card.classList.contains("correct")) {
+        if (card && !card.classList.contains("correct")) {
             flipCard(card, answers)
         }
     })
@@ -128,13 +128,9 @@ const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
 
-    // if (flipTimeout) {
-    //     clearTimeout(flipTimeout)
-    //     flipTimeout = null
-    //     console.log("flip timeout")
-    // }
-
-    if (lockBoard || card.classList.contains("correct")) return
+    if (
+        //lockBoard || 
+        card.classList.contains("correct")) return
     if (card === first) return
 
     card.classList.add("flipped")
@@ -147,14 +143,18 @@ const flipCard = (card, answers) => {
     } else {
         second = card
         hasFlipped = false
-        // clearTimeout(flipTimeout)
-        evaluateSelections()
+        
         count++
 
-        if (count === 3) {
+        if (count = 2) {
+            console.log("HELLLOO")
             clearTimeout(flipTimeout)
+            timeoutLogic()
             count = 0
         }
+
+        evaluateSelections()
+
     }
 
     console.log(count)
@@ -176,8 +176,6 @@ const evaluateSelections = () => {
 
     lockBoard = true
 
-    // countChecker()
-
     if (first.innerHTML === second.innerHTML) {
         first.classList.add("correct")
         second.classList.add("correct")
@@ -187,27 +185,21 @@ const evaluateSelections = () => {
         lockBoard = false
     } else {
         flipTimeout = setTimeout(() => {
-            first.classList.remove("flipped")
-            second.classList.remove("flipped")
-            first.querySelector(".back").innerHTML = ""
-            second.querySelector(".back").innerHTML = ""
-            givePoints(incorrectGuess)
-            lockBoard = false
+            console.log("HERE")
+            timeoutLogic()
         }, 800)
     }
 
-    // countChecker()
-    // first = null 
-    // second = null 
+}
 
-    // if (count === 2) {
-    //     count -= 2
-    // }
-
-    // if (count === 0) {
-    //     lockBoard = false
-    // }
-
+const timeoutLogic = () => {
+    first.classList.remove("flipped")
+    second.classList.remove("flipped")
+    first.querySelector(".back").innerHTML = ""
+    second.querySelector(".back").innerHTML = ""
+    givePoints(incorrectGuess)
+    lockBoard = false
+    count = 0
 }
 
 // const countChecker = () => {
