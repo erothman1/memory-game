@@ -143,14 +143,20 @@ const flipCard = (card, answers) => {
     if (!hasFlipped) {
         hasFlipped = true
         first = card
+        count ++
     } else {
         second = card
         hasFlipped = false
         // clearTimeout(flipTimeout)
         evaluateSelections()
+        count++
+
+        if (count === 3) {
+            clearTimeout(flipTimeout)
+            count = 0
+        }
     }
 
-    count++
     console.log(count)
 }
 
@@ -170,7 +176,7 @@ const evaluateSelections = () => {
 
     lockBoard = true
 
-    countChecker()
+    // countChecker()
 
     if (first.innerHTML === second.innerHTML) {
         first.classList.add("correct")
@@ -204,16 +210,16 @@ const evaluateSelections = () => {
 
 }
 
-const countChecker = () => {
+// const countChecker = () => {
 
-    if (count === 2) {
-        count = 0
-    }
+//     if (count === 2) {
+//         count = 0
+//     }
 
-    if (count === 0) {
-        lockBoard = false
-    }
-}
+//     if (count === 0) {
+//         lockBoard = false
+//     }
+// }
 
 const givePoints = (points) => {
     score += points
