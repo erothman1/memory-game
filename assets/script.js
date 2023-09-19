@@ -146,14 +146,14 @@ const flipCard = (card, answers) => {
         
         count++
 
+        evaluateSelections()
+
         if (count = 2) {
             console.log("HELLLOO")
             clearTimeout(flipTimeout)
             timeoutLogic()
             count = 0
         }
-
-        evaluateSelections()
 
     }
 
