@@ -123,41 +123,39 @@ const gameCreation = () => {
 
 }
 
-//Function to decide correct and wrong answers 
+//Function to flip cards
 const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
 
+    if (count >= 2 && lockBoard) {
+        console.log("INCORRECT GUESS: CLEAR TIMEOUT")
+        clearTimeout(flipTimeout)
+        timeoutLogic()
+        count = 0
+    }
+
     if (
-        //lockBoard || 
+        lockBoard || 
         card.classList.contains("correct")) return
     if (card === first) return
 
     card.classList.add("flipped")
     back.innerHTML = answers[cardId]
 
+    count++
+    console.log("FLIP CARD COUNT:", count)
+
     if (!hasFlipped) {
         hasFlipped = true
         first = card
-        count ++
     } else {
         second = card
         hasFlipped = false
-        
-        count++
 
         evaluateSelections()
-
-        if (count = 2) {
-            console.log("HELLLOO")
-            clearTimeout(flipTimeout)
-            timeoutLogic()
-            count = 0
-        }
-
     }
 
-    console.log(count)
 }
 
 //Function to check if game is over and user won
@@ -170,11 +168,12 @@ const checkWin = () => {
     }
 }
 
+//Function to evaluate correct and incorrect matches 
 const evaluateSelections = () => {
-
-    console.log("evaluate")
-
     lockBoard = true
+
+    console.log("EVALUATE:", first)
+    console.log("EVALUATE", second)
 
     if (first.innerHTML === second.innerHTML) {
         first.classList.add("correct")
@@ -183,12 +182,19 @@ const evaluateSelections = () => {
         givePoints(correctGuess)
         checkWin()
         lockBoard = false
+        count = 0
+        first = null
+        second = null
     } else {
+        lockBoard = false
         flipTimeout = setTimeout(() => {
-            console.log("HERE")
+            console.log("IN TIMEOUT: INCORRECT GUESS")
             timeoutLogic()
         }, 800)
     }
+
+    console.log("POST EVAL:", first)
+    console.log("POST EVAL:", second)
 
 }
 
@@ -200,18 +206,9 @@ const timeoutLogic = () => {
     givePoints(incorrectGuess)
     lockBoard = false
     count = 0
+    first = null
+    second = null
 }
-
-// const countChecker = () => {
-
-//     if (count === 2) {
-//         count = 0
-//     }
-
-//     if (count === 0) {
-//         lockBoard = false
-//     }
-// }
 
 const givePoints = (points) => {
     score += points
