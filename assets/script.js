@@ -183,31 +183,31 @@ const evaluateSelections = () => {
         checkWin()
         lockBoard = false
         count = 0
-        first = null
-        second = null
     } else {
-        lockBoard = false
+        const firstFlipped = first
+        const secondFlipped = second
         flipTimeout = setTimeout(() => {
             console.log("IN TIMEOUT: INCORRECT GUESS")
-            timeoutLogic()
+            timeoutLogic(firstFlipped, secondFlipped)
         }, 800)
     }
+
+    first = null
+    second = null
 
     console.log("POST EVAL:", first)
     console.log("POST EVAL:", second)
 
 }
 
-const timeoutLogic = () => {
-    first.classList.remove("flipped")
-    second.classList.remove("flipped")
-    first.querySelector(".back").innerHTML = ""
-    second.querySelector(".back").innerHTML = ""
+const timeoutLogic = (firstFlipped, secondFlipped) => {
+    firstFlipped.classList.remove("flipped")
+    secondFlipped.classList.remove("flipped")
+    firstFlipped.querySelector(".back").innerHTML = ""
+    secondFlipped.querySelector(".back").innerHTML = ""
     givePoints(incorrectGuess)
     lockBoard = false
     count = 0
-    first = null
-    second = null
 }
 
 const givePoints = (points) => {
