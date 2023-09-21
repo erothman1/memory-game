@@ -177,6 +177,8 @@ const evaluateSelections = () => {
     if (first.innerHTML === second.innerHTML) {
         first.classList.add("correct")
         second.classList.add("correct")
+        first.classList.remove("flipped")
+        second.classList.remove("flipped")
         flipped.push(first, second)
         givePoints(correctGuess)
         checkWin()
