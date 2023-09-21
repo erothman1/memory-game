@@ -135,7 +135,7 @@ const flipCard = (card, answers) => {
         lockBoard = false
         clearTimeout(flipTimeout)
         timeoutLogic()
-        count = 0
+        count = 1
     }
 
     if (lockBoard || card.classList.contains("correct")) return
@@ -175,12 +175,22 @@ const evaluateSelections = () => {
     console.log("EVALUATE:", first)
     console.log("EVALUATE", second)
 
-    if (first.innerHTML === second.innerHTML) {
-        first.classList.add("correct")
-        second.classList.add("correct")
-        first.classList.remove("flipped")
-        second.classList.remove("flipped")
-        flipped.push(first, second)
+    const flippedStateCards = document.querySelectorAll(".flipped")
+    const flippedArray = []
+
+    for(i=0; i < flippedStateCards.length; i++) {
+        flippedArray.push(flippedStateCards[i])
+    }
+
+    console.log("FLIPPED ARRAY", flippedArray)
+    const card1 = flippedArray[0]
+    const card2 = flippedArray[1]
+
+    if (card1 && card2 && card1.innerHTML === card2.innerHTML) {
+        card1.classList.add("correct")
+        card2.classList.add("correct")
+        card1.classList.remove("flipped")
+        card2.classList.remove("flipped")
         givePoints(correctGuess)
         checkWin()
         lockBoard = false
@@ -191,6 +201,23 @@ const evaluateSelections = () => {
             timeoutLogic()
         }, 5000)
     }
+
+    // if (first.innerHTML === second.innerHTML) {
+    //     first.classList.add("correct")
+    //     second.classList.add("correct")
+    //     first.classList.remove("flipped")
+    //     second.classList.remove("flipped")
+    //     flipped.push(first, second)
+    //     givePoints(correctGuess)
+    //     checkWin()
+    //     lockBoard = false
+    //     count = 0
+    // } else {
+    //     flipTimeout = setTimeout(() => {
+    //         console.log("IN TIMEOUT: INCORRECT GUESS")
+    //         timeoutLogic()
+    //     }, 5000)
+    // }
 
     first = null
     second = null
