@@ -128,22 +128,21 @@ const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
 
-    if (count >= 2 && lockBoard) {
+    count++
+
+    if (count === 3 && lockBoard) {
         console.log("INCORRECT GUESS: CLEAR TIMEOUT")
         clearTimeout(flipTimeout)
         timeoutLogic()
         count = 0
     }
 
-    if (
-        lockBoard || 
-        card.classList.contains("correct")) return
+    if (lockBoard || card.classList.contains("correct")) return
     if (card === first) return
 
     card.classList.add("flipped")
     back.innerHTML = answers[cardId]
 
-    count++
     console.log("FLIP CARD COUNT:", count)
 
     if (!hasFlipped) {
@@ -184,27 +183,38 @@ const evaluateSelections = () => {
         lockBoard = false
         count = 0
     } else {
-        const firstFlipped = first
-        const secondFlipped = second
+        //const firstFlipped = first
+        //const secondFlipped = second
         flipTimeout = setTimeout(() => {
             console.log("IN TIMEOUT: INCORRECT GUESS")
-            timeoutLogic(firstFlipped, secondFlipped)
+            timeoutLogic(
+                //firstFlipped, secondFlipped
+                )
         }, 800)
     }
 
     first = null
     second = null
+    hasFlipped = false
 
     console.log("POST EVAL:", first)
     console.log("POST EVAL:", second)
 
 }
 
-const timeoutLogic = (firstFlipped, secondFlipped) => {
-    firstFlipped.classList.remove("flipped")
-    secondFlipped.classList.remove("flipped")
-    firstFlipped.querySelector(".back").innerHTML = ""
-    secondFlipped.querySelector(".back").innerHTML = ""
+const timeoutLogic = (
+    //firstFlipped, secondFlipped
+    ) => {
+    // firstFlipped.classList.remove("flipped")
+    // secondFlipped.classList.remove("flipped")
+    // firstFlipped.querySelector(".back").innerHTML = ""
+    // secondFlipped.querySelector(".back").innerHTML = ""
+    const flippedStateCards = document.querySelectorAll(".flipped")
+    for (let i = 0; i < flippedStateCards.length; i++) {
+        flippedStateCards[i].classList.remove("flipped")
+        flippedStateCards[i].querySelector(".back").innerHTML = ""
+    }
+
     givePoints(incorrectGuess)
     lockBoard = false
     count = 0
