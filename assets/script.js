@@ -130,8 +130,9 @@ const flipCard = (card, answers) => {
 
     count++
 
-    if (count === 3 && lockBoard) {
+    if (count > 2) {
         console.log("INCORRECT GUESS: CLEAR TIMEOUT")
+        lockBoard = false
         clearTimeout(flipTimeout)
         timeoutLogic()
         count = 0
@@ -188,7 +189,7 @@ const evaluateSelections = () => {
         flipTimeout = setTimeout(() => {
             console.log("IN TIMEOUT: INCORRECT GUESS")
             timeoutLogic()
-        }, 800)
+        }, 5000)
     }
 
     first = null
