@@ -185,13 +185,9 @@ const evaluateSelections = () => {
         lockBoard = false
         count = 0
     } else {
-        //const firstFlipped = first
-        //const secondFlipped = second
         flipTimeout = setTimeout(() => {
             console.log("IN TIMEOUT: INCORRECT GUESS")
-            timeoutLogic(
-                //firstFlipped, secondFlipped
-                )
+            timeoutLogic()
         }, 800)
     }
 
@@ -204,13 +200,8 @@ const evaluateSelections = () => {
 
 }
 
-const timeoutLogic = (
-    //firstFlipped, secondFlipped
-    ) => {
-    // firstFlipped.classList.remove("flipped")
-    // secondFlipped.classList.remove("flipped")
-    // firstFlipped.querySelector(".back").innerHTML = ""
-    // secondFlipped.querySelector(".back").innerHTML = ""
+const timeoutLogic = () => {
+
     const flippedStateCards = document.querySelectorAll(".flipped")
     for (let i = 0; i < flippedStateCards.length; i++) {
         flippedStateCards[i].classList.remove("flipped")
