@@ -17,6 +17,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     font-size: 15px;
+    margin: 5px;
 }
 
 #dropdown {
@@ -64,7 +65,7 @@ body {
     width: 40rem;
     height: 50rem;
     margin: auto;
-    padding: .8rem;
+    padding-top: .8rem;
     display: flex;
     flex-direction: column;
     background-color: rgb(24, 74, 34);
