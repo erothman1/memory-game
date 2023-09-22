@@ -19,6 +19,22 @@ body {
     font-size: 15px;
 }
 
+#dropdown {
+    color: white;
+    background-color: rgb(12, 180, 12);
+    margin: 5px;
+    padding: 10px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#dropdown-select {
+    color: white;
+    background-color: rgb(12, 180, 12);
+    border: none;
+    font-size: 15px;
+}
+
 #stats {
     color: white;
     text-align: center;

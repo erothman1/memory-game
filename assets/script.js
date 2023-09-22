@@ -5,6 +5,8 @@ const controllers = document.getElementById("controllers")
 const stats = document.getElementById("stats")
 const board = document.getElementById("board")
 const youWin = document.getElementById("you-win")
+const dropdown = document.getElementById("dropdown")
+const dropdownSelect = document.getElementById("dropdown-select")
 let score = 100
 let flipped = []
 let hasFlipped = false
@@ -16,6 +18,14 @@ const incorrectGuess = -1
 let answers = null
 let count = 0
 let flipTimeout = null
+
+dropdownSelect.addEventListener("change", () => {
+    const selected = dropdownSelect.value
+
+    console.log("SELECTED", selected)
+
+    board.setAttribute("data-dimensions", selected)
+})
 
 //Create array of items 
 //using the names to help with match evaluation 
