@@ -16,14 +16,6 @@ let answers = null
 let count = 0
 let flipTimeout = null
 
-dropdownSelect.addEventListener("change", () => {
-    const selected = dropdownSelect.value
-
-    console.log("SELECTED", selected)
-
-    board.setAttribute("data-dimensions", selected)
-})
-
 //Create array of items 
 //using the names to help with match evaluation 
 const items = [
@@ -47,6 +39,15 @@ const items = [
     { emoji: "🦖", name: "dinosaur" },
     { emoji: "🐢", name: "turtle" }
 ]
+
+//User selects the dimensions of the game board 
+dropdownSelect.addEventListener("change", () => {
+    const selected = dropdownSelect.value
+
+    console.log("SELECTED", selected)
+
+    board.setAttribute("data-dimensions", selected)
+})
 
 //Function to randomly pick items from the array
 //default dimensions are 4x4 
@@ -109,9 +110,17 @@ const gameCreation = () => {
 
     board.innerHTML = ""
 
+    let cardClass = "four-by-four"
+
+    if (dimensions === "2") {
+        cardClass = "two-by-two"
+    } else if (dimensions === "6") {
+        cardClass = "six-by-six"
+    }
+
     for (let i = 0; i < dimensions * dimensions; i++) {
         board.innerHTML += `
-        <div class="card" data-id="${i}">
+        <div class="card ${cardClass}" data-id="${i}">
             <div class="card-inner">
                 <div class="front">🤷🏽</div>
                 <div class="back"></div>
@@ -128,6 +137,7 @@ const gameCreation = () => {
 
 }
 
+//Function to handle card clicks
 const cardClickHandler = (event) => {
     const card = event.target.closest(".card")
 
@@ -220,6 +230,7 @@ const evaluateSelections = () => {
 
 }
 
+//Function to handle the logic for incorrect match during the timeout
 const timeoutLogic = () => {
 
     const flippedStateCards = document.querySelectorAll(".flipped")
@@ -233,6 +244,7 @@ const timeoutLogic = () => {
     count = 0
 }
 
+//Function to handle giving and taking points
 const givePoints = (points) => {
     score += points
 

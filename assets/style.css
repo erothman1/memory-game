@@ -84,12 +84,27 @@ body {
 }
 
 .card {
-    width: 9rem;
-    height: 9rem;
+    /* width: 9rem;
+    height: 9rem; */
     margin: .313rem;
     position: relative;
     background-color: rgb(209, 245, 207);
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+}
+
+.card.two-by-two {
+    width: calc(50% - 1rem); 
+    height: calc(50% - 1rem); 
+}
+
+.card.four-by-four {
+    width: calc(25% - 1rem); 
+    height: calc(25% - 1rem); 
+}
+
+.card.six-by-six {
+    width: calc(16.666% - 1rem); 
+    height: calc(16.666% - 1rem); 
 }
 
 .front, 
