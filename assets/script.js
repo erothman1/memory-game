@@ -142,6 +142,9 @@ const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
 
+    if (card.classList.contains("correct")) return
+    if (card === first) return
+
     count++
 
     if (count > 2) {
@@ -151,9 +154,6 @@ const flipCard = (card, answers) => {
         timeoutLogic()
         count = 1
     }
-
-    if (lockBoard || card.classList.contains("correct")) return
-    if (card === first) return
 
     card.classList.add("flipped")
     back.innerHTML = answers[cardId]
