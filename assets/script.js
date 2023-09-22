@@ -5,14 +5,11 @@ const controllers = document.getElementById("controllers")
 const stats = document.getElementById("stats")
 const board = document.getElementById("board")
 const youWin = document.getElementById("you-win")
-const dropdown = document.getElementById("dropdown")
 const dropdownSelect = document.getElementById("dropdown-select")
 let score = 100
 let flipped = []
 let hasFlipped = false
 let lockBoard = false
-// let first = null
-// let second = null
 const correctGuess = 10
 const incorrectGuess = -1
 let answers = null
@@ -125,14 +122,6 @@ const gameCreation = () => {
 
     answers = shufflePicks.map(item => item.emoji)
 
-    // board.addEventListener("click", (event) => {
-    //     const card = event.target.closest(".card")
-
-    //     if (card && !card.classList.contains("correct")) {
-    //         flipCard(card, answers)
-    //     }
-    // })
-
     board.removeEventListener("click", cardClickHandler)
 
     board.addEventListener("click", cardClickHandler)
@@ -153,9 +142,7 @@ const flipCard = (card, answers) => {
     const back = card.querySelector(".back")
     let clickIsValid = true
 
-    if (card.classList.contains("correct") || card.classList.contains("flipped")
-    //card === first
-    ) {
+    if (card.classList.contains("correct") || card.classList.contains("flipped")) {
         clickIsValid = false
     }
 
@@ -177,9 +164,7 @@ const flipCard = (card, answers) => {
     
         if (!hasFlipped) {
             hasFlipped = true
-            // first = card
         } else {
-            // second = card
             hasFlipped = false
     
             evaluateSelections()
@@ -203,9 +188,6 @@ const checkWin = () => {
 //Function to evaluate correct and incorrect matches 
 const evaluateSelections = () => {
     lockBoard = true
-
-    // console.log("EVALUATE:", first)
-    // console.log("EVALUATE", second)
 
     const flippedStateCards = document.querySelectorAll(".flipped")
     const flippedArray = []
@@ -231,32 +213,10 @@ const evaluateSelections = () => {
         flipTimeout = setTimeout(() => {
             console.log("IN TIMEOUT: INCORRECT GUESS")
             timeoutLogic()
-        }, 5000)
+        }, 800)
     }
 
-    // if (first.innerHTML === second.innerHTML) {
-    //     first.classList.add("correct")
-    //     second.classList.add("correct")
-    //     first.classList.remove("flipped")
-    //     second.classList.remove("flipped")
-    //     flipped.push(first, second)
-    //     givePoints(correctGuess)
-    //     checkWin()
-    //     lockBoard = false
-    //     count = 0
-    // } else {
-    //     flipTimeout = setTimeout(() => {
-    //         console.log("IN TIMEOUT: INCORRECT GUESS")
-    //         timeoutLogic()
-    //     }, 5000)
-    // }
-
-    // first = null
-    // second = null
     hasFlipped = false
-
-    // console.log("POST EVAL:", first)
-    // console.log("POST EVAL:", second)
 
 }
 
