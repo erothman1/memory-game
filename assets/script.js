@@ -9,8 +9,8 @@ let score = 100
 let flipped = []
 let hasFlipped = false
 let lockBoard = false
-let first = null
-let second = null
+// let first = null
+// let second = null
 const correctGuess = 10
 const incorrectGuess = -1
 let answers = null
@@ -141,34 +141,42 @@ const cardClickHandler = (event) => {
 const flipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
+    let clickIsValid = true
 
-    if (card.classList.contains("correct")) return
-    if (card === first) return
-
-    count++
-
-    if (count > 2) {
-        console.log("INCORRECT GUESS: CLEAR TIMEOUT")
-        lockBoard = false
-        clearTimeout(flipTimeout)
-        timeoutLogic()
-        count = 1
+    if (card.classList.contains("correct") || card.classList.contains("flipped")
+    //card === first
+    ) {
+        clickIsValid = false
     }
 
-    card.classList.add("flipped")
-    back.innerHTML = answers[cardId]
+    if (clickIsValid) {
+        count++
 
-    console.log("FLIP CARD COUNT:", count)
-
-    if (!hasFlipped) {
-        hasFlipped = true
-        first = card
-    } else {
-        second = card
-        hasFlipped = false
-
-        evaluateSelections()
+        if (count > 2) {
+            console.log("INCORRECT GUESS: CLEAR TIMEOUT")
+            lockBoard = false
+            clearTimeout(flipTimeout)
+            timeoutLogic()
+            count = 1
+        }
+    
+        card.classList.add("flipped")
+        back.innerHTML = answers[cardId]
+    
+        console.log("FLIP CARD COUNT:", count)
+    
+        if (!hasFlipped) {
+            hasFlipped = true
+            // first = card
+        } else {
+            // second = card
+            hasFlipped = false
+    
+            evaluateSelections()
+        }
     }
+
+    return
 
 }
 
@@ -186,8 +194,8 @@ const checkWin = () => {
 const evaluateSelections = () => {
     lockBoard = true
 
-    console.log("EVALUATE:", first)
-    console.log("EVALUATE", second)
+    // console.log("EVALUATE:", first)
+    // console.log("EVALUATE", second)
 
     const flippedStateCards = document.querySelectorAll(".flipped")
     const flippedArray = []
@@ -233,12 +241,12 @@ const evaluateSelections = () => {
     //     }, 5000)
     // }
 
-    first = null
-    second = null
+    // first = null
+    // second = null
     hasFlipped = false
 
-    console.log("POST EVAL:", first)
-    console.log("POST EVAL:", second)
+    // console.log("POST EVAL:", first)
+    // console.log("POST EVAL:", second)
 
 }
 
