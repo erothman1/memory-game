@@ -83,6 +83,8 @@ const gameCreation = () => {
 
     console.log("game creation")
 
+    count = 0
+
     stats.textContent = "Score: 100"
     score = 100
 
@@ -113,14 +115,26 @@ const gameCreation = () => {
 
     answers = shufflePicks.map(item => item.emoji)
 
-    board.addEventListener("click", (event) => {
-        const card = event.target.closest(".card")
+    // board.addEventListener("click", (event) => {
+    //     const card = event.target.closest(".card")
 
-        if (card && !card.classList.contains("correct")) {
-            flipCard(card, answers)
-        }
-    })
+    //     if (card && !card.classList.contains("correct")) {
+    //         flipCard(card, answers)
+    //     }
+    // })
 
+    board.removeEventListener("click", cardClickHandler)
+
+    board.addEventListener("click", cardClickHandler)
+
+}
+
+const cardClickHandler = (event) => {
+    const card = event.target.closest(".card")
+
+    if (card && !card.classList.contains("correct")) {
+        flipCard(card, answers)
+    }
 }
 
 //Function to flip cards
@@ -178,7 +192,7 @@ const evaluateSelections = () => {
     const flippedStateCards = document.querySelectorAll(".flipped")
     const flippedArray = []
 
-    for(i=0; i < flippedStateCards.length; i++) {
+    for(let i = 0; i < flippedStateCards.length; i++) {
         flippedArray.push(flippedStateCards[i])
     }
 
