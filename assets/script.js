@@ -15,6 +15,49 @@ const incorrectGuess = -1
 let answers = null
 let count = 0
 let flipTimeout = null
+const unsplashAccessKey = "YuhhDhVQBQxxn-OYxkuiw2AJWeIw5PJIuXWCLJ0CLUo"
+let unsplashArray = []
+
+const fetchUnsplash = () => {
+
+    const dimensions = board.getAttribute("data-dimensions")
+
+    unsplashArray = []
+
+    let numPhotos = 8
+
+    if (dimensions === "2") {
+        numPhotos = 2
+    } else if (dimensions === "6") {
+        numPhotos = 18
+    } else {
+        numPhotos = 8
+    }
+
+    const apiURL = `https://api.unsplash.com/photos/random/?count=${numPhotos}&orientation=squarish&client_id=${unsplashAccessKey}`
+
+    fetch(apiURL)
+        .then((response) => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                throw new Error(response.status)
+            }
+        })
+        .then((data) => {
+            // console.log(data)
+            for ( let i = 0; i < data.length; i++) {
+                // console.log(data[i].urls.regular)
+                unsplashArray.push(data[i].urls.regular)
+            }
+            gameCreation()
+        })
+        .catch((error) => {
+            console.log(error.message)
+        })
+
+        console.log(unsplashArray)
+}
 
 //Create array of items 
 //using the names to help with match evaluation 
@@ -89,6 +132,8 @@ const shuffle = (arr) => {
 //Function to create game with cards
 const gameCreation = () => {
 
+    //TODO: once unsplash images are fetched, we need to shuffle them x2
+
     console.log("game creation")
 
     count = 0
@@ -103,10 +148,11 @@ const gameCreation = () => {
     //default of the data-dimensions attribute is 4
     const dimensions = board.getAttribute("data-dimensions")
 
-    const randPicks = pickRandom(dimensions)
+    // const randPicks = pickRandom(dimensions)
 
     //without the shuffle, only 8 cards will show up because we didn't duplicate them for the matching 
-    const shufflePicks = shuffle([...randPicks, ...randPicks])
+    // const shufflePicks = shuffle([...randPicks, ...randPicks])
+    const shuffleUnsplash = shuffle([...unsplashArray, ...unsplashArray])
 
     board.innerHTML = ""
 
@@ -129,7 +175,8 @@ const gameCreation = () => {
         `
     }
 
-    answers = shufflePicks.map(item => item.emoji)
+    // answers = shufflePicks.map(item => item.emoji)
+    answers = shuffleUnsplash
 
     board.removeEventListener("click", cardClickHandler)
 
@@ -168,7 +215,15 @@ const flipCard = (card, answers) => {
         }
     
         card.classList.add("flipped")
-        back.innerHTML = answers[cardId]
+
+        //TODO: edit for unsplash
+        // back.innerHTML = answers[cardId]
+        const image = document.createElement("img")
+        image.src = answers[cardId]
+        back.style.backgroundSize = "cover"
+        back.style.backgroundPosition = "center"
+        back.innerHTML = ""
+        back.appendChild(image)
     
         console.log("FLIP CARD COUNT:", count)
     
@@ -236,7 +291,10 @@ const timeoutLogic = () => {
     const flippedStateCards = document.querySelectorAll(".flipped")
     for (let i = 0; i < flippedStateCards.length; i++) {
         flippedStateCards[i].classList.remove("flipped")
-        flippedStateCards[i].querySelector(".back").innerHTML = ""
+
+        //TODO: edit this for unsplash
+        // flippedStateCards[i].querySelector(".back").innerHTML = ""
+        flippedStateCards[i].querySelector(".back").backgroundImage = "none"
     }
 
     givePoints(incorrectGuess)
@@ -256,4 +314,7 @@ const givePoints = (points) => {
 }
 
 //Event listener for new game/starting game button 
-newGame.addEventListener("click", gameCreation)
+newGame.addEventListener("click", 
+fetchUnsplash
+//gameCreation
+)
