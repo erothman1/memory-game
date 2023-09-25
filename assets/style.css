@@ -95,6 +95,11 @@ body {
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 }
 
+.card:not(:empty) {
+    padding: 10px;
+    overflow: hidden;
+}
+
 .card.two-by-two {
     width: calc(100% / 2 - 1rem); 
     height: calc(100% / 2 - 1rem); 

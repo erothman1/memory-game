@@ -220,10 +220,12 @@ const flipCard = (card, answers) => {
         // back.innerHTML = answers[cardId]
         const image = document.createElement("img")
         image.src = answers[cardId]
+        image.style.width = "100%"
         back.style.backgroundSize = "cover"
         back.style.backgroundPosition = "center"
         back.innerHTML = ""
         back.appendChild(image)
+        // card.style.padding = "5px"
     
         console.log("FLIP CARD COUNT:", count)
     
@@ -264,6 +266,8 @@ const evaluateSelections = () => {
     console.log("FLIPPED ARRAY", flippedArray)
     const card1 = flippedArray[0]
     const card2 = flippedArray[1]
+    console.log("CARD 1", card1.innerHTML)
+    console.log("CARD 2", card2.innerHTML)
 
     if (card1 && card2 && card1.innerHTML === card2.innerHTML) {
         card1.classList.add("correct")
@@ -290,11 +294,20 @@ const timeoutLogic = () => {
 
     const flippedStateCards = document.querySelectorAll(".flipped")
     for (let i = 0; i < flippedStateCards.length; i++) {
-        flippedStateCards[i].classList.remove("flipped")
+        const card = flippedStateCards[i]
+        card.classList.remove("flipped")
+
+        const backEl = card.querySelector(".back")
+        const imageEl = backEl.querySelector("img")
+
+        if (imageEl) {
+            backEl.removeChild(imageEl)
+        }
+
+        backEl.style.backgroundImage = "none"
 
         //TODO: edit this for unsplash
         // flippedStateCards[i].querySelector(".back").innerHTML = ""
-        flippedStateCards[i].querySelector(".back").backgroundImage = "none"
     }
 
     givePoints(incorrectGuess)
