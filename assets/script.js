@@ -278,6 +278,8 @@ const evaluateSelections = () => {
             lockBoard = false
             count = 0
         } else {
+            card1.classList.add("wrong")
+            card2.classList.add("wrong")
             flipTimeout = setTimeout(() => {
                 console.log("IN TIMEOUT: INCORRECT GUESS")
                 timeoutLogic()
@@ -323,6 +325,7 @@ const timeoutLogic = () => {
     for (let i = 0; i < flippedStateCards.length; i++) {
         const card = flippedStateCards[i]
         card.classList.remove("flipped")
+        card.classList.remove("wrong")
 
         const backEl = card.querySelector(".back")
         const imageEl = backEl.querySelector("img")
