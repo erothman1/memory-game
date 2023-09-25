@@ -46,7 +46,7 @@ const fetchUnsplash = () => {
         })
         .then((data) => {
             // console.log(data)
-            for ( let i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 // console.log(data[i].urls.regular)
                 unsplashArray.push(data[i].urls.regular)
             }
@@ -56,7 +56,7 @@ const fetchUnsplash = () => {
             console.log(error.message)
         })
 
-        console.log(unsplashArray)
+    console.log(unsplashArray)
 }
 
 //Create array of items 
@@ -213,7 +213,7 @@ const flipCard = (card, answers) => {
             timeoutLogic()
             count = 1
         }
-    
+
         card.classList.add("flipped")
 
         //TODO: edit for unsplash
@@ -226,14 +226,14 @@ const flipCard = (card, answers) => {
         back.innerHTML = ""
         back.appendChild(image)
         // card.style.padding = "5px"
-    
+
         console.log("FLIP CARD COUNT:", count)
-    
+
         if (!hasFlipped) {
             hasFlipped = true
         } else {
             hasFlipped = false
-    
+
             evaluateSelections()
         }
     }
@@ -247,7 +247,7 @@ const checkWin = () => {
     const cards = document.querySelectorAll(".card")
     const matchedCards = document.querySelectorAll(".card.correct")
 
-    if (cards.length === matchedCards.length ) {
+    if (cards.length === matchedCards.length) {
         youWin.style.display = "block"
     }
 }
@@ -257,33 +257,60 @@ const evaluateSelections = () => {
     lockBoard = true
 
     const flippedStateCards = document.querySelectorAll(".flipped")
-    const flippedArray = []
 
-    for(let i = 0; i < flippedStateCards.length; i++) {
-        flippedArray.push(flippedStateCards[i])
+    if (flippedStateCards.length === 2) {
+        const card1 = flippedStateCards[0]
+        const card2 = flippedStateCards[1]
+
+        const img1 = card1.querySelector(".back img")
+        const img2 = card2.querySelector(".back img")
+
+        console.log("CARD1", img1.src)
+        console.log("CARD2", img2.src)
+
+        if (img1.src === img2.src) {
+            card1.classList.add("correct")
+            card2.classList.add("correct")
+            card1.classList.remove("flipped")
+            card2.classList.remove("flipped")
+            givePoints(correctGuess)
+            checkWin()
+            lockBoard = false
+            count = 0
+        } else {
+            flipTimeout = setTimeout(() => {
+                console.log("IN TIMEOUT: INCORRECT GUESS")
+                timeoutLogic()
+            }, 800)
+        }
     }
+    // const flippedArray = []
 
-    console.log("FLIPPED ARRAY", flippedArray)
-    const card1 = flippedArray[0]
-    const card2 = flippedArray[1]
-    console.log("CARD 1", card1.innerHTML)
-    console.log("CARD 2", card2.innerHTML)
+    // for(let i = 0; i < flippedStateCards.length; i++) {
+    //     flippedArray.push(flippedStateCards[i])
+    // }
 
-    if (card1 && card2 && card1.innerHTML === card2.innerHTML) {
-        card1.classList.add("correct")
-        card2.classList.add("correct")
-        card1.classList.remove("flipped")
-        card2.classList.remove("flipped")
-        givePoints(correctGuess)
-        checkWin()
-        lockBoard = false
-        count = 0
-    } else {
-        flipTimeout = setTimeout(() => {
-            console.log("IN TIMEOUT: INCORRECT GUESS")
-            timeoutLogic()
-        }, 800)
-    }
+    // console.log("FLIPPED ARRAY", flippedArray)
+    // const card1 = flippedArray[0]
+    // const card2 = flippedArray[1]
+    // console.log("CARD 1", card1.innerHTML)
+    // console.log("CARD 2", card2.innerHTML)
+
+    // if (card1 && card2 && card1.innerHTML === card2.innerHTML) {
+    //     card1.classList.add("correct")
+    //     card2.classList.add("correct")
+    //     card1.classList.remove("flipped")
+    //     card2.classList.remove("flipped")
+    //     givePoints(correctGuess)
+    //     checkWin()
+    //     lockBoard = false
+    //     count = 0
+    // } else {
+    //     flipTimeout = setTimeout(() => {
+    //         console.log("IN TIMEOUT: INCORRECT GUESS")
+    //         timeoutLogic()
+    //     }, 800)
+    // }
 
     hasFlipped = false
 
@@ -319,7 +346,7 @@ const timeoutLogic = () => {
 const givePoints = (points) => {
     score += points
 
-    if ( stats != null ) {
+    if (stats != null) {
         stats.textContent = `Score: ${score}`
     }
 
@@ -327,7 +354,7 @@ const givePoints = (points) => {
 }
 
 //Event listener for new game/starting game button 
-newGame.addEventListener("click", 
-fetchUnsplash
-//gameCreation
+newGame.addEventListener("click",
+    fetchUnsplash
+    //gameCreation
 )

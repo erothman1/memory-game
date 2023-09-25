@@ -95,7 +95,8 @@ body {
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 }
 
-.card:not(:empty) {
+.card.flipped, 
+.card.correct {
     padding: 10px;
     overflow: hidden;
 }
