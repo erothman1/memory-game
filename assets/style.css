@@ -11,7 +11,9 @@ body {
 }
 
 #new-game,
-#end-game {
+#end-game,
+#submit-initials,
+#play-again {
     color: white;
     background-color: rgb(12, 180, 12);
     border: none;
@@ -20,6 +22,10 @@ body {
     border-radius: 20px;
     font-size: 15px;
     margin: 5px;
+}
+
+#new-game,
+#end-game {
     flex: 1;
 }
 
@@ -66,7 +72,8 @@ body {
     background-color: rgb(24, 74, 34);
 }
 
-#game-container {
+#game-container,
+#done-container {
     /* width: 40rem;
     height: 50rem; */
     width: 100%;
@@ -188,4 +195,27 @@ body {
 
 #done-container {
     display: none;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#leaderboard-form {
+    /* background-color: rgb(209, 245, 207); */
+    width: 50vw;
+    height: 25vh;
+    display: flex;
+    flex-direction: initial;
+    align-items: center;
+    justify-content: center;
+}
+/* 
+#init {
+    color:rgb(24, 74, 34)
+} */
+
+#play-again {
+    margin: 30px;
 }
