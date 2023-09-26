@@ -8,6 +8,12 @@ const youWin = document.getElementById("you-win")
 const dropdownSelect = document.getElementById("dropdown-select")
 const attempts = document.getElementById("attempts")
 const endGame = document.getElementById("end-game")
+const doneContainer = document.getElementById("done-container")
+const finalScore = document.getElementById("final-score")
+const playerInitials = document.getElementById("initials")
+const submitInitials = document.getElementById("submit-initials")
+const scoreList = document.getElementById("score-list")
+const playAgain = document.getElementById("play-again")
 let score = 100
 let attemptCount = 500
 let flipped = []
@@ -93,6 +99,10 @@ const gameCreation = () => {
     console.log("game creation")
 
     count = 0
+
+    if (attemptCount === 0) {
+        gameOver()
+    }
 
     attemptCount -= 1
     attempts.textContent = `Attempts: ${attemptCount}`
@@ -278,8 +288,55 @@ const givePoints = (points) => {
     return
 }
 
+const gameOver = () => {
+    doneContainer.style.display = "block"
+    gameContainer.style.display = "none"
+
+    finalScore.textContent = `Your final score is ${score} after ${attemptCount} attempts!`
+
+    submitInitials.addEventListener("click", leaderBoard)
+}
+
+const leaderBoard = (event) => {
+    event.preventDefault()
+
+    const gameScore = {
+        initials: playerInitials.value.trim(),
+        score: score,
+        attempts: attemptCount
+    }
+
+    const savedScores = JSON.parse(localStorage.getItem("gameScore")) || []
+
+    savedScores.push(gameScore)
+
+    for (let i = 0; i < savedScores.length; i++) {
+        const listEl = document.createElement("li")
+        listEl.textContent = `${savedScores[i].initials} -> Score: ${savedScores[i].score} Attempts: ${savedScores[i].attempts}`
+        listEl.style.listStyle = "none"
+
+        scoreList.appendChild(listEl)
+    }
+
+    localStorage.setItem("gameScore", JSON.stringify(savedScores))
+}
+
+const anotherRound = () => {
+    attemptCount = 500
+    score = 100
+
+    doneContainer.style.display = "none"
+    gameContainer.style.display = "block"
+
+    fetchUnsplash()
+}
+
 //Event listener for new game/starting game button 
 newGame.addEventListener("click",
     fetchUnsplash
     //gameCreation
 )
+
+endGame.addEventListener("click", gameOver)
+
+playAgain.addEventListener("click", anotherRound)

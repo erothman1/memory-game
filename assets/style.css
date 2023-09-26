@@ -185,3 +185,7 @@ body {
 .card.wrong {
     background-color: red;
 }
+
+#done-container {
+    display: none;
+}
