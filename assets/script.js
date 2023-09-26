@@ -222,6 +222,7 @@ const flipCard = (card, answers) => {
         const image = document.createElement("img")
         image.src = answers[cardId]
         image.style.width = "100%"
+        image.style.height = "100%"
         back.style.backgroundSize = "cover"
         back.style.backgroundPosition = "center"
         back.innerHTML = ""
