@@ -18,6 +18,7 @@ let flipTimeout = null
 const unsplashAccessKey = "YuhhDhVQBQxxn-OYxkuiw2AJWeIw5PJIuXWCLJ0CLUo"
 let unsplashArray = []
 
+//Function to fetch random photos from unsplash
 const fetchUnsplash = () => {
 
     const dimensions = board.getAttribute("data-dimensions")
@@ -34,7 +35,7 @@ const fetchUnsplash = () => {
         numPhotos = 8
     }
 
-    const apiURL = `https://api.unsplash.com/photos/random/?count=${numPhotos}&orientation=squarish&client_id=${unsplashAccessKey}`
+    const apiURL = `https://api.unsplash.com/photos/random/?count=${numPhotos}&orientation=landscape&client_id=${unsplashAccessKey}`
 
     fetch(apiURL)
         .then((response) => {
@@ -61,27 +62,27 @@ const fetchUnsplash = () => {
 
 //Create array of items 
 //using the names to help with match evaluation 
-const items = [
-    { emoji: "🌳", name: "tree" },
-    { emoji: "🍀", name: "clover" },
-    { emoji: "🔫", name: "watergun" },
-    { emoji: "🐍", name: "snake" },
-    { emoji: "🐸", name: "frog" },
-    { emoji: "🥑", name: "avocado" },
-    { emoji: "🐛", name: "caterpillar" },
-    { emoji: "🥒", name: "cucumber" },
-    { emoji: "🍏", name: "apple" },
-    { emoji: "🥬", name: "lettuce" },
-    { emoji: "🧩", name: "puzzle" },
-    { emoji: "🐲", name: "dragon" },
-    { emoji: "🫒", name: "olive" },
-    { emoji: "🪲", name: "beetle" },
-    { emoji: "🎄", name: "christmas" },
-    { emoji: "💚", name: "heart" },
-    { emoji: "🌿", name: "leaf" },
-    { emoji: "🦖", name: "dinosaur" },
-    { emoji: "🐢", name: "turtle" }
-]
+// const items = [
+//     { emoji: "🌳", name: "tree" },
+//     { emoji: "🍀", name: "clover" },
+//     { emoji: "🔫", name: "watergun" },
+//     { emoji: "🐍", name: "snake" },
+//     { emoji: "🐸", name: "frog" },
+//     { emoji: "🥑", name: "avocado" },
+//     { emoji: "🐛", name: "caterpillar" },
+//     { emoji: "🥒", name: "cucumber" },
+//     { emoji: "🍏", name: "apple" },
+//     { emoji: "🥬", name: "lettuce" },
+//     { emoji: "🧩", name: "puzzle" },
+//     { emoji: "🐲", name: "dragon" },
+//     { emoji: "🫒", name: "olive" },
+//     { emoji: "🪲", name: "beetle" },
+//     { emoji: "🎄", name: "christmas" },
+//     { emoji: "💚", name: "heart" },
+//     { emoji: "🌿", name: "leaf" },
+//     { emoji: "🦖", name: "dinosaur" },
+//     { emoji: "🐢", name: "turtle" }
+// ]
 
 //User selects the dimensions of the game board 
 dropdownSelect.addEventListener("change", () => {
@@ -94,25 +95,25 @@ dropdownSelect.addEventListener("change", () => {
 
 //Function to randomly pick items from the array
 //default dimensions are 4x4 
-const pickRandom = (dim = 4) => {
-    let arrayCopy = [...items]
-    const randPicks = []
+// const pickRandom = (dim = 4) => {
+//     let arrayCopy = [...items]
+//     const randPicks = []
 
-    const boardSize = (dim * dim) / 2
+//     const boardSize = (dim * dim) / 2
 
-    for (let i = 0; i < boardSize; i++) {
-        const index = Math.floor(Math.random() * arrayCopy.length)
+//     for (let i = 0; i < boardSize; i++) {
+//         const index = Math.floor(Math.random() * arrayCopy.length)
 
-        //add randomly picked item to the random picks array
-        randPicks.push(arrayCopy[index])
+//         //add randomly picked item to the random picks array
+//         randPicks.push(arrayCopy[index])
 
-        //delete randomly picked item from the array copy to avoid duplicate picks 
-        arrayCopy.splice(index, 1)
-    }
-    console.log("pick rand")
-    arrayCopy = []
-    return randPicks
-}
+//         //delete randomly picked item from the array copy to avoid duplicate picks 
+//         arrayCopy.splice(index, 1)
+//     }
+//     console.log("pick rand")
+//     arrayCopy = []
+//     return randPicks
+// }
 
 //Shuffle picks
 const shuffle = (arr) => {
