@@ -6,7 +6,10 @@ const stats = document.getElementById("stats")
 const board = document.getElementById("board")
 const youWin = document.getElementById("you-win")
 const dropdownSelect = document.getElementById("dropdown-select")
+const attempts = document.getElementById("attempts")
+const endGame = document.getElementById("end-game")
 let score = 100
+let attemptCount = 500
 let flipped = []
 let hasFlipped = false
 let lockBoard = false
@@ -91,8 +94,10 @@ const gameCreation = () => {
 
     count = 0
 
-    stats.textContent = "Score: 100"
-    score = 100
+    attemptCount -= 1
+    attempts.textContent = `Attempts: ${attemptCount}`
+    // stats.textContent = "Score: 100"
+    // score = 100
 
     if (youWin) {
         youWin.style.display = "none"
