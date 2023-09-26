@@ -60,30 +60,6 @@ const fetchUnsplash = () => {
     console.log(unsplashArray)
 }
 
-//Create array of items 
-//using the names to help with match evaluation 
-// const items = [
-//     { emoji: "🌳", name: "tree" },
-//     { emoji: "🍀", name: "clover" },
-//     { emoji: "🔫", name: "watergun" },
-//     { emoji: "🐍", name: "snake" },
-//     { emoji: "🐸", name: "frog" },
-//     { emoji: "🥑", name: "avocado" },
-//     { emoji: "🐛", name: "caterpillar" },
-//     { emoji: "🥒", name: "cucumber" },
-//     { emoji: "🍏", name: "apple" },
-//     { emoji: "🥬", name: "lettuce" },
-//     { emoji: "🧩", name: "puzzle" },
-//     { emoji: "🐲", name: "dragon" },
-//     { emoji: "🫒", name: "olive" },
-//     { emoji: "🪲", name: "beetle" },
-//     { emoji: "🎄", name: "christmas" },
-//     { emoji: "💚", name: "heart" },
-//     { emoji: "🌿", name: "leaf" },
-//     { emoji: "🦖", name: "dinosaur" },
-//     { emoji: "🐢", name: "turtle" }
-// ]
-
 //User selects the dimensions of the game board 
 dropdownSelect.addEventListener("change", () => {
     const selected = dropdownSelect.value
@@ -92,28 +68,6 @@ dropdownSelect.addEventListener("change", () => {
 
     board.setAttribute("data-dimensions", selected)
 })
-
-//Function to randomly pick items from the array
-//default dimensions are 4x4 
-// const pickRandom = (dim = 4) => {
-//     let arrayCopy = [...items]
-//     const randPicks = []
-
-//     const boardSize = (dim * dim) / 2
-
-//     for (let i = 0; i < boardSize; i++) {
-//         const index = Math.floor(Math.random() * arrayCopy.length)
-
-//         //add randomly picked item to the random picks array
-//         randPicks.push(arrayCopy[index])
-
-//         //delete randomly picked item from the array copy to avoid duplicate picks 
-//         arrayCopy.splice(index, 1)
-//     }
-//     console.log("pick rand")
-//     arrayCopy = []
-//     return randPicks
-// }
 
 //Shuffle picks
 const shuffle = (arr) => {
@@ -133,8 +87,6 @@ const shuffle = (arr) => {
 //Function to create game with cards
 const gameCreation = () => {
 
-    //TODO: once unsplash images are fetched, we need to shuffle them x2
-
     console.log("game creation")
 
     count = 0
@@ -149,10 +101,7 @@ const gameCreation = () => {
     //default of the data-dimensions attribute is 4
     const dimensions = board.getAttribute("data-dimensions")
 
-    // const randPicks = pickRandom(dimensions)
-
     //without the shuffle, only 8 cards will show up because we didn't duplicate them for the matching 
-    // const shufflePicks = shuffle([...randPicks, ...randPicks])
     const shuffleUnsplash = shuffle([...unsplashArray, ...unsplashArray])
 
     board.innerHTML = ""
@@ -176,7 +125,6 @@ const gameCreation = () => {
         `
     }
 
-    // answers = shufflePicks.map(item => item.emoji)
     answers = shuffleUnsplash
 
     board.removeEventListener("click", cardClickHandler)
@@ -217,8 +165,6 @@ const flipCard = (card, answers) => {
 
         card.classList.add("flipped")
 
-        //TODO: edit for unsplash
-        // back.innerHTML = answers[cardId]
         const image = document.createElement("img")
         image.src = answers[cardId]
         image.style.width = "100%"
@@ -227,7 +173,6 @@ const flipCard = (card, answers) => {
         back.style.backgroundPosition = "center"
         back.innerHTML = ""
         back.appendChild(image)
-        // card.style.padding = "5px"
 
         console.log("FLIP CARD COUNT:", count)
 
@@ -288,33 +233,6 @@ const evaluateSelections = () => {
             }, 800)
         }
     }
-    // const flippedArray = []
-
-    // for(let i = 0; i < flippedStateCards.length; i++) {
-    //     flippedArray.push(flippedStateCards[i])
-    // }
-
-    // console.log("FLIPPED ARRAY", flippedArray)
-    // const card1 = flippedArray[0]
-    // const card2 = flippedArray[1]
-    // console.log("CARD 1", card1.innerHTML)
-    // console.log("CARD 2", card2.innerHTML)
-
-    // if (card1 && card2 && card1.innerHTML === card2.innerHTML) {
-    //     card1.classList.add("correct")
-    //     card2.classList.add("correct")
-    //     card1.classList.remove("flipped")
-    //     card2.classList.remove("flipped")
-    //     givePoints(correctGuess)
-    //     checkWin()
-    //     lockBoard = false
-    //     count = 0
-    // } else {
-    //     flipTimeout = setTimeout(() => {
-    //         console.log("IN TIMEOUT: INCORRECT GUESS")
-    //         timeoutLogic()
-    //     }, 800)
-    // }
 
     hasFlipped = false
 
@@ -337,9 +255,6 @@ const timeoutLogic = () => {
         }
 
         backEl.style.backgroundImage = "none"
-
-        //TODO: edit this for unsplash
-        // flippedStateCards[i].querySelector(".back").innerHTML = ""
     }
 
     givePoints(incorrectGuess)
