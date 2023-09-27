@@ -190,7 +190,7 @@ body {
 }
 
 .card.wrong {
-    background-color: red;
+    background-color: rgb(244, 143, 222);
 }
 
 #done-container {
