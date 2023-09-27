@@ -27,6 +27,30 @@ let flipTimeout = null
 const unsplashAccessKey = "YuhhDhVQBQxxn-OYxkuiw2AJWeIw5PJIuXWCLJ0CLUo"
 let unsplashArray = []
 
+//Create array of items 
+//using the names to help with match evaluation 
+const items = [
+    { emoji: "🌳", name: "tree" },
+    { emoji: "🍀", name: "clover" },
+    { emoji: "🔫", name: "watergun" },
+    { emoji: "🐍", name: "snake" },
+    { emoji: "🐸", name: "frog" },
+    { emoji: "🥑", name: "avocado" },
+    { emoji: "🐛", name: "caterpillar" },
+    { emoji: "🥒", name: "cucumber" },
+    { emoji: "🍏", name: "apple" },
+    { emoji: "🥬", name: "lettuce" },
+    { emoji: "🧩", name: "puzzle" },
+    { emoji: "🐲", name: "dragon" },
+    { emoji: "🫒", name: "olive" },
+    { emoji: "🪲", name: "beetle" },
+    { emoji: "🎄", name: "christmas" },
+    { emoji: "💚", name: "heart" },
+    { emoji: "🌿", name: "leaf" },
+    { emoji: "🦖", name: "dinosaur" },
+    { emoji: "🐢", name: "turtle" }
+]
+
 //Function to fetch random photos from unsplash
 const fetchUnsplash = () => {
 
@@ -64,6 +88,10 @@ const fetchUnsplash = () => {
         })
         .catch((error) => {
             console.log(error.message)
+            if (error) {
+                emojiGameCreation()
+            }
+            // emojiGameCreation()
         })
 
     console.log(unsplashArray)
@@ -77,6 +105,28 @@ dropdownSelect.addEventListener("change", () => {
 
     board.setAttribute("data-dimensions", selected)
 })
+
+//Function to randomly pick items from the array
+//default dimensions are 4x4 
+const pickRandom = (dim = 4) => {
+    let arrayCopy = [...items]
+    const randPicks = []
+
+    const boardSize = (dim * dim) / 2
+
+    for (let i = 0; i < boardSize; i++) {
+        const index = Math.floor(Math.random() * arrayCopy.length)
+
+        //add randomly picked item to the random picks array
+        randPicks.push(arrayCopy[index])
+
+        //delete randomly picked item from the array copy to avoid duplicate picks 
+        arrayCopy.splice(index, 1)
+    }
+    console.log("pick rand")
+    arrayCopy = []
+    return randPicks
+}
 
 //Shuffle picks
 const shuffle = (arr) => {
@@ -149,12 +199,75 @@ const gameCreation = () => {
 
 }
 
+//FUNCTION FOR EMOJI GAME CREATION
+const emojiGameCreation = () => {
+
+    console.log("emoji game creation")
+
+    count = 0
+
+    if (attemptCount === 0) {
+        gameOver()
+    }
+
+    attemptCount -= 1
+    attempts.textContent = `Attempts: ${attemptCount}`
+    stats.textContent = `Score: ${score}`
+
+    if (youWin) {
+        youWin.style.display = "none"
+    }
+
+    //default of the data-dimensions attribute is 4
+    const dimensions = board.getAttribute("data-dimensions")
+
+    const randPicks = pickRandom(dimensions)
+
+    //without the shuffle, only 8 cards will show up because we didn't duplicate them for the matching 
+    const shufflePicks = shuffle([...randPicks, ...randPicks])
+
+    board.innerHTML = ""
+
+    let cardClass = "four-by-four"
+
+    if (dimensions === "2") {
+        cardClass = "two-by-two"
+    } else if (dimensions === "6") {
+        cardClass = "six-by-six"
+    }
+
+    for (let i = 0; i < dimensions * dimensions; i++) {
+        board.innerHTML += `
+        <div class="card ${cardClass}" data-id="${i}">
+            <div class="card-inner">
+                <div class="front">🤷🏽</div>
+                <div class="back"></div>
+            </div>
+        </div>
+        `
+    }
+
+    answers = shufflePicks.map(item => item.emoji)
+
+    board.removeEventListener("click", emojiCardClickHandler)
+
+    board.addEventListener("click", emojiCardClickHandler)
+}
+
 //Function to handle card clicks
 const cardClickHandler = (event) => {
     const card = event.target.closest(".card")
 
     if (card && !card.classList.contains("correct")) {
         flipCard(card, answers)
+    }
+}
+
+const emojiCardClickHandler = (event) => {
+    const card = event.target.closest(".card")
+
+    if (card && !card.classList.contains("correct")) {
+        emojiFlipCard(card, answers)
     }
 }
 
@@ -203,6 +316,44 @@ const flipCard = (card, answers) => {
 
     return
 
+}
+
+const emojiFlipCard = (card, answers) => {
+    const cardId = card.getAttribute("data-id")
+    const back = card.querySelector(".back")
+    let clickIsValid = true
+
+    if (card.classList.contains("correct") || card.classList.contains("flipped")) {
+        clickIsValid = false
+    }
+
+    if (clickIsValid) {
+        count++
+
+        if (count > 2) {
+            console.log("INCORRECT GUESS: CLEAR TIMEOUT")
+            lockBoard = false
+            clearTimeout(flipTimeout)
+            timeoutLogic()
+            count = 1
+        }
+    
+        card.classList.add("flipped")
+
+        back.innerHTML = answers[cardId]
+    
+        console.log("FLIP CARD COUNT:", count)
+    
+        if (!hasFlipped) {
+            hasFlipped = true
+        } else {
+            hasFlipped = false
+    
+            emojiEvaluateSelections()
+        }
+    }
+
+    return
 }
 
 //Function to check if game is over and user won
@@ -254,6 +405,39 @@ const evaluateSelections = () => {
 
 }
 
+const emojiEvaluateSelections = () => {
+    lockBoard = true
+
+    const flippedStateCards = document.querySelectorAll(".flipped")
+    const flippedArray = []
+
+    for(let i = 0; i < flippedStateCards.length; i++) {
+        flippedArray.push(flippedStateCards[i])
+    }
+
+    console.log("FLIPPED ARRAY", flippedArray)
+    const card1 = flippedArray[0]
+    const card2 = flippedArray[1]
+
+    if (card1 && card2 && card1.innerHTML === card2.innerHTML) {
+        card1.classList.add("correct")
+        card2.classList.add("correct")
+        card1.classList.remove("flipped")
+        card2.classList.remove("flipped")
+        givePoints(correctGuess)
+        checkWin()
+        lockBoard = false
+        count = 0
+    } else {
+        flipTimeout = setTimeout(() => {
+            console.log("IN TIMEOUT: INCORRECT GUESS")
+            emojiTimeoutLogic()
+        }, 800)
+    }
+
+    hasFlipped = false
+}
+
 //Function to handle the logic for incorrect match during the timeout
 const timeoutLogic = () => {
 
@@ -278,6 +462,18 @@ const timeoutLogic = () => {
     count = 0
 }
 
+const emojiTimeoutLogic = () => {
+    const flippedStateCards = document.querySelectorAll(".flipped")
+    for (let i = 0; i < flippedStateCards.length; i++) {
+        flippedStateCards[i].classList.remove("flipped")
+        flippedStateCards[i].querySelector(".back").innerHTML = ""
+    }
+
+    givePoints(incorrectGuess)
+    lockBoard = false
+    count = 0
+}
+
 //Function to handle giving and taking points
 const givePoints = (points) => {
     score += points
@@ -289,6 +485,7 @@ const givePoints = (points) => {
     return
 }
 
+//Function to show game over/leaderboard page
 const gameOver = () => {
     // doneContainer.style.display = "block"
     doneContainer.style.display = "flex"
@@ -299,6 +496,7 @@ const gameOver = () => {
     submitInitials.addEventListener("click", leaderBoard)
 }
 
+//Function to save user's game scores to local storage 
 const leaderBoard = (event) => {
     event.preventDefault()
 
@@ -323,6 +521,7 @@ const leaderBoard = (event) => {
     localStorage.setItem("gameScore", JSON.stringify(savedScores))
 }
 
+//Function to handle bringing user back to game from leaderboard 
 const anotherRound = () => {
     attemptCount = 500
     score = 100
@@ -335,11 +534,10 @@ const anotherRound = () => {
 }
 
 //Event listener for new game/starting game button 
-newGame.addEventListener("click",
-    fetchUnsplash
-    //gameCreation
-)
+newGame.addEventListener("click", fetchUnsplash)
 
+//Event listener for end game button to show leaderboard
 endGame.addEventListener("click", gameOver)
 
+//Event listener for play again button to bring user back to game from leaderboard
 playAgain.addEventListener("click", anotherRound)
