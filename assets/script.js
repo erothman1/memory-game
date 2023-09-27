@@ -27,6 +27,7 @@ let count = 0
 let flipTimeout = null
 const unsplashAccessKey = "YuhhDhVQBQxxn-OYxkuiw2AJWeIw5PJIuXWCLJ0CLUo"
 let unsplashArray = []
+const imgArray = []
 
 //Create array of items for emoji version of game 
 //using the names to help with match evaluation 
@@ -57,6 +58,10 @@ const fetchUnsplash = () => {
 
     board.innerHTML = ""
 
+    newGame.disabled = true
+    endGame.disabled = true
+    spinner.style.display = "inline-block"
+
     const dimensions = board.getAttribute("data-dimensions")
 
     unsplashArray = []
@@ -73,11 +78,14 @@ const fetchUnsplash = () => {
 
     const apiURL = `https://api.unsplash.com/photos/random/?count=${numPhotos}&orientation=landscape&client_id=${unsplashAccessKey}`
 
-    const loadingTimeout = setTimeout(() => {
-        newGame.disabled = true
-        endGame.disabled = true
-        spinner.style.display = "inline-block"
-    }, 100)
+    // const loadingTimeout = setTimeout(() => {
+    //     newGame.disabled = true
+    //     endGame.disabled = true
+    //     spinner.style.display = "inline-block"
+    // }, 100)
+
+    const imageEl = document.createElement("img")
+    imageEl.style.display = "none"
 
     fetch(apiURL)
         .then((response) => {
@@ -89,22 +97,35 @@ const fetchUnsplash = () => {
         })
         .then((data) => {
             // console.log(data)
-            clearTimeout(loadingTimeout)
-            newGame.disabled = false
-            endGame.disabled = false
-            spinner.style.display = "none"
+            // clearTimeout(loadingTimeout)
 
             for (let i = 0; i < data.length; i++) {
                 // console.log(data[i].urls.regular)
                 unsplashArray.push(data[i].urls.regular)
+                imageEl.src = data[i].urls.regular
             }
-            gameCreation()
+
+            preload(unsplashArray)
+
+            // gameCreation()
+
+            // newGame.disabled = false
+            // endGame.disabled = false
+            // spinner.style.display = "none"
         })
+        // .then(() => {
+                        
+        //     gameCreation()
+
+        //     newGame.disabled = false
+        //     endGame.disabled = false
+        //     spinner.style.display = "none"
+        // })
         .catch((error) => {
-            clearTimeout(loadingTimeout)
-            newGame.disabled = false
-            endGame.disabled = false
-            spinner.style.display = "none"
+            // clearTimeout(loadingTimeout)
+            // newGame.disabled = false
+            // endGame.disabled = false
+            // spinner.style.display = "none"
 
             console.log(error.message)
 
@@ -114,6 +135,28 @@ const fetchUnsplash = () => {
         })
 
     console.log(unsplashArray)
+    
+}
+
+//Function to preload images so all images are accessible before game is created 
+const preload = (imageURLs) => {
+    let imgCount = 0
+
+    for (const imageURL of imageURLs) {
+        const img = new Image()
+
+        img.src = imageURL
+
+        img.onload = () => {
+            imgCount ++
+
+            if (imgCount === imageURLs.length) {
+                gameCreation()
+            }
+        }
+
+        imgArray.push(img.src)
+    }
 }
 
 //User selects the dimensions of the game board 
@@ -165,6 +208,10 @@ const shuffle = (arr) => {
 //Function to create game with cards
 const gameCreation = () => {
 
+    newGame.disabled = false
+    endGame.disabled = false
+    spinner.style.display = "none"
+
     console.log("game creation")
 
     count = 0
@@ -187,7 +234,7 @@ const gameCreation = () => {
     const dimensions = board.getAttribute("data-dimensions")
 
     //without the shuffle, only 8 cards will show up because we didn't duplicate them for the matching 
-    const shuffleUnsplash = shuffle([...unsplashArray, ...unsplashArray])
+    const shuffleUnsplash = shuffle([...imgArray, ...imgArray])
 
     board.innerHTML = ""
 
@@ -222,6 +269,10 @@ const gameCreation = () => {
 const emojiGameCreation = () => {
 
     console.log("emoji game creation")
+
+    newGame.disabled = false
+    endGame.disabled = false
+    spinner.style.display = "none"
 
     count = 0
 
