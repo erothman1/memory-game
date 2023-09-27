@@ -84,8 +84,8 @@ const fetchUnsplash = () => {
     //     spinner.style.display = "inline-block"
     // }, 100)
 
-    const imageEl = document.createElement("img")
-    imageEl.style.display = "none"
+    // const imageEl = document.createElement("img")
+    // imageEl.style.display = "none"
 
     fetch(apiURL)
         .then((response) => {
@@ -221,7 +221,7 @@ const gameCreation = () => {
     }
 
     attemptCount -= 1
-    attempts.textContent = `Attempts: ${attemptCount}`
+    attempts.textContent = `Attempts Left: ${attemptCount}`
     stats.textContent = `Score: ${score}`
     // stats.textContent = "Score: 100"
     // score = 100
@@ -281,7 +281,7 @@ const emojiGameCreation = () => {
     }
 
     attemptCount -= 1
-    attempts.textContent = `Attempts: ${attemptCount}`
+    attempts.textContent = `Attempts Left: ${attemptCount}`
     stats.textContent = `Score: ${score}`
 
     if (youWin) {
