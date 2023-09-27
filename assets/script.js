@@ -84,8 +84,8 @@ const fetchUnsplash = () => {
     //     spinner.style.display = "inline-block"
     // }, 100)
 
-    // const imageEl = document.createElement("img")
-    // imageEl.style.display = "none"
+    const imageEl = document.createElement("img")
+    imageEl.style.display = "none"
 
     fetch(apiURL)
         .then((response) => {
