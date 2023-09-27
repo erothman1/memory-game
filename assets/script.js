@@ -27,7 +27,7 @@ let flipTimeout = null
 const unsplashAccessKey = "YuhhDhVQBQxxn-OYxkuiw2AJWeIw5PJIuXWCLJ0CLUo"
 let unsplashArray = []
 
-//Create array of items 
+//Create array of items for emoji version of game 
 //using the names to help with match evaluation 
 const items = [
     { emoji: "🌳", name: "tree" },
@@ -199,7 +199,7 @@ const gameCreation = () => {
 
 }
 
-//FUNCTION FOR EMOJI GAME CREATION
+//Function for emoji game creation 
 const emojiGameCreation = () => {
 
     console.log("emoji game creation")
@@ -263,6 +263,7 @@ const cardClickHandler = (event) => {
     }
 }
 
+//Function to handle card clicks for emoji game
 const emojiCardClickHandler = (event) => {
     const card = event.target.closest(".card")
 
@@ -318,6 +319,7 @@ const flipCard = (card, answers) => {
 
 }
 
+//Function to handle card flipping for emoji version
 const emojiFlipCard = (card, answers) => {
     const cardId = card.getAttribute("data-id")
     const back = card.querySelector(".back")
@@ -405,6 +407,7 @@ const evaluateSelections = () => {
 
 }
 
+//Function to evaluate matches for emoji version
 const emojiEvaluateSelections = () => {
     lockBoard = true
 
@@ -462,6 +465,7 @@ const timeoutLogic = () => {
     count = 0
 }
 
+//Function to handle timeout logic for emoji version
 const emojiTimeoutLogic = () => {
     const flippedStateCards = document.querySelectorAll(".flipped")
     for (let i = 0; i < flippedStateCards.length; i++) {
