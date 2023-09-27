@@ -106,6 +106,7 @@ const gameCreation = () => {
 
     attemptCount -= 1
     attempts.textContent = `Attempts: ${attemptCount}`
+    stats.textContent = `Score: ${score}`
     // stats.textContent = "Score: 100"
     // score = 100
 
@@ -290,6 +291,7 @@ const givePoints = (points) => {
 
 const gameOver = () => {
     doneContainer.style.display = "block"
+    doneContainer.style.display = "flex"
     gameContainer.style.display = "none"
 
     finalScore.textContent = `Your final score is ${score} after ${attemptCount} attempts!`
@@ -327,6 +329,7 @@ const anotherRound = () => {
 
     doneContainer.style.display = "none"
     gameContainer.style.display = "block"
+    gameContainer.style.display = "flex"
 
     fetchUnsplash()
 }
