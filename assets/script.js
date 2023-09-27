@@ -290,7 +290,7 @@ const givePoints = (points) => {
 }
 
 const gameOver = () => {
-    doneContainer.style.display = "block"
+    // doneContainer.style.display = "block"
     doneContainer.style.display = "flex"
     gameContainer.style.display = "none"
 
@@ -328,7 +328,7 @@ const anotherRound = () => {
     score = 100
 
     doneContainer.style.display = "none"
-    gameContainer.style.display = "block"
+    // gameContainer.style.display = "block"
     gameContainer.style.display = "flex"
 
     fetchUnsplash()
