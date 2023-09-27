@@ -14,6 +14,7 @@ const playerInitials = document.getElementById("initials")
 const submitInitials = document.getElementById("submit-initials")
 const scoreList = document.getElementById("score-list")
 const playAgain = document.getElementById("play-again")
+const spinner = document.getElementById("spinner")
 let score = 100
 let attemptCount = 500
 let flipped = []
@@ -54,6 +55,8 @@ const items = [
 //Function to fetch random photos from unsplash
 const fetchUnsplash = () => {
 
+    board.innerHTML = ""
+
     const dimensions = board.getAttribute("data-dimensions")
 
     unsplashArray = []
@@ -70,6 +73,12 @@ const fetchUnsplash = () => {
 
     const apiURL = `https://api.unsplash.com/photos/random/?count=${numPhotos}&orientation=landscape&client_id=${unsplashAccessKey}`
 
+    const loadingTimeout = setTimeout(() => {
+        newGame.disabled = true
+        endGame.disabled = true
+        spinner.style.display = "inline-block"
+    }, 100)
+
     fetch(apiURL)
         .then((response) => {
             if (response.ok) {
@@ -80,6 +89,11 @@ const fetchUnsplash = () => {
         })
         .then((data) => {
             // console.log(data)
+            clearTimeout(loadingTimeout)
+            newGame.disabled = false
+            endGame.disabled = false
+            spinner.style.display = "none"
+
             for (let i = 0; i < data.length; i++) {
                 // console.log(data[i].urls.regular)
                 unsplashArray.push(data[i].urls.regular)
@@ -87,11 +101,16 @@ const fetchUnsplash = () => {
             gameCreation()
         })
         .catch((error) => {
+            clearTimeout(loadingTimeout)
+            newGame.disabled = false
+            endGame.disabled = false
+            spinner.style.display = "none"
+
             console.log(error.message)
+
             if (error) {
                 emojiGameCreation()
             }
-            // emojiGameCreation()
         })
 
     console.log(unsplashArray)
