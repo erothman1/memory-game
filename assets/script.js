@@ -27,7 +27,7 @@ let count = 0
 let flipTimeout = null
 const unsplashAccessKey = "YuhhDhVQBQxxn-OYxkuiw2AJWeIw5PJIuXWCLJ0CLUo"
 let unsplashArray = []
-const imgArray = []
+let imgArray = []
 
 //Create array of items for emoji version of game 
 //using the names to help with match evaluation 
@@ -65,6 +65,7 @@ const fetchUnsplash = () => {
     const dimensions = board.getAttribute("data-dimensions")
 
     unsplashArray = []
+    imgArray = []
 
     let numPhotos = 8
 
